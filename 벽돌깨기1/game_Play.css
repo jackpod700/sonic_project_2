@@ -88,3 +88,8 @@ input[type="button"] {
   display: inline;
   float: left;
 }
+
+#tmpBt input{
+  border:0;
+  font-size: 20px;
+}
