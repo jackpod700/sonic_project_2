@@ -101,6 +101,7 @@ class Ball {
     this.mx = this.speed * Math.cos(radian);
     this.my = -this.speed * Math.sin(radian);
   }
+
   move(k) {
     this.x = this.x + this.mx * k;
     this.y = this.y + this.my * k;
@@ -197,10 +198,17 @@ class Eggman1{
   collide(ball) {
     var check = () => (ball.x-bossx)**2+(ball.y-bossy)**2 < 3600;
     if (check()) {
+      var temp;
+
       if(ck==1){
-        var radian = Math.atan((bossy-ball.y)/(bossx-ball.x))-Math.atan((ball.coly-ball.y)/(ball.colx-ball.x));
-        var angle = (-1) * radian * 180 / Math.PI;
-        ball.setAngle(angle);
+        if(((bossy-ball.y)/bossx-ball.x)>1){
+          if(ball.mx > 0 && ball.my > 0){
+            temp = ball.mx;
+            ball.mx = -ball.my;
+            ball.my = -ball.mx;
+          } else if(ball.mx > 0 && ball.){
+        }
+
         ck = 0;
       }
     }
@@ -212,7 +220,6 @@ class Eggman1{
       if(ck==1){
         var radian = Math.atan(((bossy+180)-ball.y)/(bossx-ball.x))-Math.atan((ball.coly-ball.y)/(ball.colx-ball.x));
         var angle = radian * 180 / Math.PI;
-        ball.setAngle(angle);
         ck = 0;
       }
     }
@@ -260,7 +267,7 @@ class Paddle {
       var angle = 80 - (hitPos / this.halfWidth) * 60;
       ball.setAngle(angle);
       ball.colx = ball.x;
-      ball.coly = ball.y + ball.radius;
+      ball.coly = ball.y;
       ck = 1;
     }
   }
