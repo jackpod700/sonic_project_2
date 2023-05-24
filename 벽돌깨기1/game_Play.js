@@ -11,9 +11,36 @@ var supersonic = 0; //슈퍼소닉 아이템
 var clock = 0; //공 속도저하 아이템(시간 아이템이라 하겠음)
 var Knuckles = 0; //너클즈 아이템
 var is_supersonic = false; //슈퍼소닉 상태
+//각 이미지 돌리기 변수
+var sonicimg_count=0;
+var ringimg_count=0;
+var supersonicimg_count=0;
+var Knucklesimg_count=0;
 
 $(document).ready(function () {
+  //레벨에 맞게 게임 자동 시작
   startGame(localStorage.getItem("level"));
+  //이미지들 돌리기
+  setInterval(function(){
+    //링
+    ring_img.src = "ring/ring-sonic/ring-"+ringimg_count+".png";
+    if(ringimg_count==7) ringimg_count=0;
+    else ringimg_count++;
+    //너클즈
+    Knuckles_img.src = "Knuckles/Knuckles_ball-" + Knucklesimg_count + ".png";
+    if (Knucklesimg_count == 4) Knucklesimg_count = 0;
+    else Knucklesimg_count++;
+  },70);
+  setInterval(function(){
+    //소닉
+    sonicImg.src="sonic/sonic_ball-"+sonicimg_count+".png";
+    if(sonicimg_count==7) sonicimg_count=0;
+    else sonicimg_count++;
+    //슈퍼소닉
+    supersonic_img.src = "supersonic/supersonic_ball-"+supersonicimg_count+".png";
+    if(supersonicimg_count==7) supersonicimg_count=0;
+    else supersonicimg_count++;
+  },20);
 });
 
 //레벨 을 인자로 받아 게임 시작
@@ -39,10 +66,14 @@ const PADDLE_Y = HEIGHT - PADDLE_HEIGHT - 10;
 //이미지들
 var ballImg = new Image(30, 30);
 ballImg.src = "sonic/sonic_ball-0.png";
+var sonicImg = new Image(30,30);
+sonicImg.src = "sonic/sonic_ball-0.png";
 var ring_img = new Image();
-ring_img.src = "ring/ring-sonic.gif";
+ring_img.src = "ring/ring-sonic/ring-0.png";
 var supersonic_img = new Image();
 supersonic_img.src = "supersonic/supersonic_ball-0.png";
+var clock_img = new Image();
+clock_img.src= "clock/clock.gif";
 var Knuckles_img = new Image();
 Knuckles_img.src = "Knuckles/Knuckles_ball-0.png";
 var paddle_img = new Array(3);
@@ -50,6 +81,12 @@ for (var i = 0; i < 3; i++) {
   paddle_img[i] = new Image();
   paddle_img[i].src = "paddle/paddle" + (i + 1) + ".png";
 }
+var lv1Img=new Image();
+lv1Img.src="blocks/lv1block.png";
+var lv2Img=new Image();
+lv2Img.src="blocks/lv2block.png";
+var lv3Img=new Image();
+lv3Img.src="blocks/lv3block.png";
 /**임시 색상 **/
 const COLOR = "dodgerblue";
 /**data(brick 배치) 레벨별로 디자인 후 정의 필요 **/
@@ -64,9 +101,9 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c % 2) line[c] = new Brick("red", 2);
+        if (c % 2) line[c] = new Brick(lv1Img, 2);
         //아이템 랜덤 생성시 브릭을 매번 생성해줘야됨
-        else line[c] = new Brick("blue", 1);
+        else line[c] = new Brick(lv1Img, 1);
       }
       data.push(line);
     }
@@ -79,8 +116,8 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c % 2) line[c] = new Brick("red", 2);
-        else line[c] = new Brick("blue", 2);
+        if (c % 2) line[c] = new Brick(lv2Img, 2);
+        else line[c] = new Brick(lv2Img, 2);
       }
       data.push(line);
     }
@@ -168,11 +205,8 @@ class Ball {
     //소닉 이미지 변경
     if (this.is_sonic) {
       //소닉일때
-      if (is_supersonic)
-        ballImg.src = "supersonic/supersonic_ball-" + this.count + ".png";
-      else ballImg.src = "sonic/sonic_ball-" + this.count + ".png";
-      if (this.count == 7) this.count = 0;
-      else this.count++;
+      if (is_supersonic) ballImg = supersonic_img;
+      else ballImg = sonicImg;
       ctx.beginPath();
       ctx.drawImage(
         ballImg,
@@ -184,9 +218,6 @@ class Ball {
       ctx.closePath();
     } else {
       //너클즈일때
-      Knuckles_img.src = "Knuckles/Knuckles_ball-" + this.count + ".png";
-      if (this.count == 4) this.count = 0;
-      else this.count++;
       ctx.beginPath();
       ctx.drawImage(
         Knuckles_img,
@@ -300,8 +331,8 @@ class Paddle {
 
 //브릭
 class Brick {
-  constructor(color, hp) {
-    this.color = color;
+  constructor(img, hp) {
+    this.img = img;
     this.hp = hp;
     //아이템들 추가
     this.has_ring = Math.random() > 0.7;
@@ -364,9 +395,13 @@ class Bricks {
         var x_Brick = this.x + this.brickWidth * c;
         var y_Brick = this.y + this.brickHeight * r;
         ctx.beginPath();
-        ctx.fillStyle = this.data[r][c].color; //이미지로 수정!
-        ctx.fillRect(x_Brick, y_Brick, this.brickWidth, this.brickHeight);
-        ctx.strokeRect(x_Brick, y_Brick, this.brickWidth, this.brickHeight);
+        ctx.drawImage(
+          this.data[r][c].img,
+          x_Brick,
+          y_Brick,
+          this.brickWidth,
+          this.brickHeight
+        );
         ctx.closePath();
         //블럭에 아이템이 들어있을 시 아이템 이미지 삽입
         if (this.data[r][c].has_ring) {
@@ -388,7 +423,7 @@ class Bricks {
           );
         }
         if (this.data[r][c].has_clock) {
-          //ctx.drawImage(clock_img,x_Brick+this.brickWidth/2-18,y_Brick+this.brickHeight/2-18,36,36)
+          ctx.drawImage(clock_img,x_Brick+this.brickWidth/2-18,y_Brick+this.brickHeight/2-18,36,36)
         }
         if (this.data[r][c].has_Knuckles) {
           ctx.drawImage(
@@ -432,6 +467,7 @@ document.addEventListener("keydown", (e) => {
     //시간아이템 사용
     if (clock > 0) {
       //소닉 속도 변경
+      //마지막 * 숫자가 시간아이템 사용시의 속도
       game.ball[0].mx = (game.ball[0].mx / game.ball[0].speed) * 1;
       game.ball[0].my = (game.ball[0].my / game.ball[0].speed) * 1;
       game.ball[0].speed = 1;
@@ -588,6 +624,7 @@ class Game {
     this.paddle.draw(ctx);
     this.ball[0].draw(ctx);
     if (this.ball[1] != null) {
+      //너클즈 있을때 너클즈 그리기
       this.ball[1].draw(ctx);
     }
     if (this.level != 3) {
@@ -595,6 +632,9 @@ class Game {
     } else {
       this.boss.draw(ctx);
     }
+
+
+    
   }
 }
 //임시 결과창 함수
@@ -612,7 +652,7 @@ function mainLoop() {
   game.update();
   game.draw();
   if (game.state == "end") resultScreen("END");
-  if (game.state == "go2Lv2") resultScreen("go2Lv2");
-  if (game.state == "go2Lv3") resultScreen("go2Lv3");
+  if (game.state == "go2Lv2") location.href = "../메뉴/프로젝트/item_ex/explain2.html";
+  if (game.state == "go2Lv3") location.href = "../메뉴/프로젝트/item_ex/explain3.html";
   if (game.state == "clear") resultScreen("CLEAR");
 }
