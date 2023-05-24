@@ -11,36 +11,42 @@ var supersonic = 0; //슈퍼소닉 아이템
 var clock = 0; //공 속도저하 아이템(시간 아이템이라 하겠음)
 var Knuckles = 0; //너클즈 아이템
 var is_supersonic = false; //슈퍼소닉 상태
+
 //각 이미지 돌리기 변수
-var sonicimg_count=0;
-var ringimg_count=0;
-var supersonicimg_count=0;
-var Knucklesimg_count=0;
+var sonicimg_count = 0;
+var ringimg_count = 0;
+var supersonicimg_count = 0;
+var Knucklesimg_count = 0;
+var score = 0; //게임 총 점수 - 게임 새로 시작할때 초기화 필요
 
 $(document).ready(function () {
   //레벨에 맞게 게임 자동 시작
   startGame(localStorage.getItem("level"));
   //이미지들 돌리기
-  setInterval(function(){
+  setInterval(function () {
     //링
-    ring_img.src = "ring/ring-sonic/ring-"+ringimg_count+".png";
-    if(ringimg_count==7) ringimg_count=0;
+    ring_img.src = "ring/ring-sonic/ring-" + ringimg_count + ".png";
+    if (ringimg_count == 7) ringimg_count = 0;
     else ringimg_count++;
     //너클즈
     Knuckles_img.src = "Knuckles/Knuckles_ball-" + Knucklesimg_count + ".png";
     if (Knucklesimg_count == 4) Knucklesimg_count = 0;
     else Knucklesimg_count++;
-  },70);
-  setInterval(function(){
+  }, 70);
+  setInterval(function () {
     //소닉
-    sonicImg.src="sonic/sonic_ball-"+sonicimg_count+".png";
-    if(sonicimg_count==7) sonicimg_count=0;
+    sonicImg.src = "sonic/sonic_ball-" + sonicimg_count + ".png";
+    if (sonicimg_count == 7) sonicimg_count = 0;
     else sonicimg_count++;
     //슈퍼소닉
-    supersonic_img.src = "supersonic/supersonic_ball-"+supersonicimg_count+".png";
-    if(supersonicimg_count==7) supersonicimg_count=0;
+    supersonic_img.src =
+      "supersonic/supersonic_ball-" + supersonicimg_count + ".png";
+    if (supersonicimg_count == 7) supersonicimg_count = 0;
     else supersonicimg_count++;
-  },20);
+  }, 20);
+  $("#pause_btn").on("click", function () {
+    if (game.state == "play") game.state = "pause";
+  });
 });
 
 //레벨 을 인자로 받아 게임 시작
@@ -66,14 +72,14 @@ const PADDLE_Y = HEIGHT - PADDLE_HEIGHT - 10;
 //이미지들
 var ballImg = new Image(30, 30);
 ballImg.src = "sonic/sonic_ball-0.png";
-var sonicImg = new Image(30,30);
+var sonicImg = new Image(30, 30);
 sonicImg.src = "sonic/sonic_ball-0.png";
 var ring_img = new Image();
 ring_img.src = "ring/ring-sonic/ring-0.png";
 var supersonic_img = new Image();
 supersonic_img.src = "supersonic/supersonic_ball-0.png";
 var clock_img = new Image();
-clock_img.src= "clock/clock.gif";
+clock_img.src = "clock/clock.gif";
 var Knuckles_img = new Image();
 Knuckles_img.src = "Knuckles/Knuckles_ball-0.png";
 var paddle_img = new Array(3);
@@ -81,12 +87,12 @@ for (var i = 0; i < 3; i++) {
   paddle_img[i] = new Image();
   paddle_img[i].src = "paddle/paddle" + (i + 1) + ".png";
 }
-var lv1Img=new Image();
-lv1Img.src="blocks/lv1block.png";
-var lv2Img=new Image();
-lv2Img.src="blocks/lv2block.png";
-var lv3Img=new Image();
-lv3Img.src="blocks/lv3block.png";
+var lv1Img = new Image();
+lv1Img.src = "blocks/lv1block.png";
+var lv2Img = new Image();
+lv2Img.src = "blocks/lv2block.png";
+var lv3Img = new Image();
+lv3Img.src = "blocks/lv3block.png";
 /**임시 색상 **/
 const COLOR = "dodgerblue";
 /**data(brick 배치) 레벨별로 디자인 후 정의 필요 **/
@@ -384,6 +390,7 @@ class Bricks {
       //블럭 없애기
       this.data[row][col] = 0;
       this.count--;
+      score++; //블럭당 점수 1점( 수정 가능 )
       return true;
     } else return false;
   }
@@ -423,7 +430,13 @@ class Bricks {
           );
         }
         if (this.data[r][c].has_clock) {
-          ctx.drawImage(clock_img,x_Brick+this.brickWidth/2-18,y_Brick+this.brickHeight/2-18,36,36)
+          ctx.drawImage(
+            clock_img,
+            x_Brick + this.brickWidth / 2 - 18,
+            y_Brick + this.brickHeight / 2 - 18,
+            36,
+            36
+          );
         }
         if (this.data[r][c].has_Knuckles) {
           ctx.drawImage(
@@ -508,6 +521,24 @@ document.addEventListener("keydown", (e) => {
       document.getElementById("Knuckles_count").innerText = Knuckles;
     }
   }
+  if (key == "c" && game.state == "pause") {
+    //continue
+    game.state = "play";
+  }
+  if (
+    key == "m" &&
+    (game.state == "pause" || game.state == "lose" || game.state == "clear")
+  ) {
+    //Main-Menu
+    if (myReq) cancelAnimationFrame(myReq);
+    score = 0; //점수 초기화
+    location.href = "../메뉴/프로젝트/menu/menu.html";
+  }
+  if (key == "r" && (game.state == "lose" || game.state == "clear")) {
+    //Retry
+    score = 0; //점수 초기화
+    startGame(g_level);
+  }
 });
 
 class Game {
@@ -517,7 +548,7 @@ class Game {
 
     this.level = level;
 
-    this.state = "start"; //게임의 현재 상태("start" / "play" // "end" // "clear")
+    this.state = "start"; //게임의 현재 상태("start" / "play" // "lose" // "clear")
     this.timeCount = 0;
     this.paddle = new Paddle(
       PADDLE_X,
@@ -601,7 +632,7 @@ class Game {
         is_supersonic = false;
         is_darksonic = false;
       } else {
-        this.state = "end";
+        this.state = "lose";
       }
     }
     //너클즈가 떨어진다면 너클즈 삭제
@@ -632,18 +663,104 @@ class Game {
     } else {
       this.boss.draw(ctx);
     }
-
-
-    
+    document.getElementById("score_count").innerHTML = score;
   }
 }
-//임시 결과창 함수
+//결과+멈춤창 함수
 function resultScreen(result) {
-  ctx.font = "bold 70px arial";
-  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(80, 110, 550, 550);
+  ctx.globalAlpha = 0.7;
+  ctx.closePath();
+  if (result == "nextStage") resultScreen_nextStage();
+  if (result == "END") resultScreen_end();
+  if (result == "PAUSE") resultScreen_pause();
+}
+//다음 스테이지 넘어가는 캔버스 그리기
+function resultScreen_nextStage() {
+  if (myReq) cancelAnimationFrame(myReq);
+  ctx.beginPath();
+  ctx.fillStyle = "#ff8831";
+  ctx.font = "40px sonic";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(result, WIDTH / 2, HEIGHT / 2);
+  var str = "Go stage" + (Number(g_level) + 1);
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.45);
+
+  ctx.fillStyle = "#17569b";
+  ctx.font = "20px sonic";
+  ctx.textBaseline = "middle";
+  var str = "current score: " + score;
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.55);
+  ctx.closePath();
+  var timeCnt = 0;
+  var req = setInterval(function () {
+    timeCnt++;
+    if (timeCnt == 3) {
+      clearInterval(req);
+      startGame(Number(g_level) + 1);
+    }
+  }, 1000);
+}
+var continue_img = new Image();
+continue_img.src = "resultScreen_btn/continue.png";
+var main_menu_img = new Image();
+main_menu_img.src = "resultScreen_btn/main-menu.png";
+var retry_img = new Image();
+retry_img.src = "resultScreen_btn/retry.png";
+//종료(클리어 or 실패) 결과 화면 캔버스 그리기
+function resultScreen_end() {
+  ctx.beginPath();
+  ctx.fillStyle = "#ff8831";
+  ctx.font = "40px sonic";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  if (game.state == "lose") var str = "You Lose..";
+  else var str = "You Win!";
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.4);
+
+  ctx.fillStyle = "#17569b";
+  ctx.font = "20px sonic";
+  ctx.textBaseline = "middle";
+  var str = "Your score: " + score;
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
+
+  ctx.font = "15px sonic";
+  ctx.fillStyle = "#ff8832";
+  ctx.fillText("Retry", WIDTH * 0.37, HEIGHT * 0.7);
+  ctx.drawImage(retry_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+
+  ctx.fillStyle = "#ff8833";
+  ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
+  ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
+  ctx.closePath();
+}
+//멈춤 화면 캔버스 그리기
+function resultScreen_pause() {
+  ctx.beginPath();
+  ctx.fillStyle = "#ff8831";
+  ctx.font = "40px sonic";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  var str = "Pause";
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.4);
+
+  ctx.fillStyle = "#17569b";
+  ctx.font = "20px sonic";
+  ctx.textBaseline = "middle";
+  var str = "current score: " + score;
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
+
+  ctx.font = "15px sonic";
+  ctx.fillStyle = "#ff8832";
+  ctx.fillText("Continue", WIDTH * 0.37, HEIGHT * 0.7);
+  ctx.drawImage(continue_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+
+  ctx.fillStyle = "#ff8833";
+  ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
+  ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
+  ctx.closePath();
 }
 
 //반복 함수
@@ -651,8 +768,8 @@ function mainLoop() {
   myReq = requestAnimationFrame(mainLoop);
   game.update();
   game.draw();
-  if (game.state == "end") resultScreen("END");
-  if (game.state == "go2Lv2") location.href = "../메뉴/프로젝트/item_ex/explain2.html";
-  if (game.state == "go2Lv3") location.href = "../메뉴/프로젝트/item_ex/explain3.html";
-  if (game.state == "clear") resultScreen("CLEAR");
+  if (game.state == "lose" || game.state == "clear") resultScreen("END");
+  if (game.state == "go2Lv2" || game.state == "go2Lv3")
+    resultScreen("nextStage");
+  if (game.state == "pause") resultScreen("PAUSE");
 }
