@@ -1,0 +1,143 @@
+@font-face {
+  font-family: "sonic";
+  src: url("../NiseSegasonic.ttf")
+}
+figure {
+  width: 150%;
+  aspect-ratio: 1;
+  margin: 0 0 60px;
+  padding: 5px 20px 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 100%;
+  cursor: pointer;
+  position: relative;
+  filter: drop-shadow(0 0 20px rgb(0 0 0/50%));
+}
+figure:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: top/cover;
+  transform-origin: bottom;
+  filter: brightness(.9);
+  transition: .5s;
+}
+
+
+img {
+  grid-area: 1/1;
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  filter: contrast(.8) brightness(.7);
+  place-self: end center;
+  transition: .5s;
+}
+figcaption {
+  grid-area: 1/1;
+  width: calc(100% + 40px);
+  font-family: sonic;
+  color: #fff;
+  font-size: min(32px,5vmin);
+  text-align: center;
+  place-self: end center;
+  transform: perspective(500px) translateY(100%) rotateX(-90deg);
+  backface-visibility: hidden;
+  transform-origin: top;
+  background: #000;
+  transition: .5s;
+}
+figure:hover img {
+  width: 120%;
+  height: 150%;
+  filter: contrast(1);
+}
+figure:hover::before {
+  filter: brightness(.3);
+  transform: perspective(500px) rotateX(60deg);
+}
+figure:hover figcaption{
+  transform: perspective(500px)translateY(100%) rotateX(-30deg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(230px,35vmin);
+  place-content: end center;
+  gap: 50px;
+  background: 
+    linear-gradient(to left, #0000,rgb(50 50 50 / 88%)),
+    url("pic/mapbackground4.gif") top/cover;
+}
+
+#sonicmap {
+  left: -170%;
+}
+#shadowmap{
+  left:-80%;
+}
+#eggmanmap{
+  right: -10%;
+}
+
+#story {
+  top: 18%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  perspective: 2000px;
+}
+
+#line {
+  background: linear-gradient(rgba(155, 33, 7, 0.7), black);
+  padding: 5vh;
+  width: 1000px;
+  height: 100px;
+  border-radius: 2vh;
+  transition: background-color 1s, transform 1s;
+  box-shadow: 5px 7px 0 black;
+}
+
+
+@keyframes typing {
+    from {
+     width: 0
+     }
+}
+@keyframes blink {
+    50% {
+    border-color: transparent
+    }
+}
+
+#storyline #p1 {
+    width:780px;
+    animation: typing 5s steps(57), .5s step-end;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'sonic', serif;
+    text-align: center;
+    font-size: 20px;
+    color: white;
+    animation-delay: 0s;
+}
+
+
+#storyline #p2 {
+       
+    width:750px;
+    animation: typing 4s steps(47), .5s step-end;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'sonic', serif;
+    text-align: center;
+    font-size: 20px;
+    color: white;
+    animation-delay: 5s;
+}

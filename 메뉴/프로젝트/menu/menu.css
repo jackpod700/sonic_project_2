@@ -1,0 +1,149 @@
+
+@font-face {
+  font-family: "sonic";
+  src: url("../NiseSegasonic.ttf")
+}
+html {
+  overflow: hidden;
+  user-select: none;
+  background-image: url('../map/pic/menu.png');
+  background-size: cover;
+}
+html body {
+  margin: 0;
+}
+
+#contain {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  perspective: 2000px;
+}
+#contain .mf {
+  background: linear-gradient(rgba(155, 33, 7, 0.7), rgba(255, 255, 255, 0.1));
+  padding: 5vh;
+  width: 70vh;
+  border-radius: 2vh;
+  transition: background-color 1s, transform 1s;
+  box-shadow: 7px 10px 0 #3E3C3B;
+}
+#contain .mf .title {
+  font-family: "sonic";
+  font-size: 10vh;
+  color: #1a1a1a;
+  text-align: center;
+  animation-name: pulse;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+#contain .mf .con {
+  width: 100%;
+  margin: 3vh 0 0 0;
+  padding: 5vh 0 5vh 0;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(179, 174, 173, 1.0));
+  border-radius: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#contain .mf .con .button {
+  font-family: "sonic";
+  font-size: 3vh;
+  height: 17vh;
+  width: 17vh;
+  color: #1a1a1a;
+  text-align: center;
+  transition: transform 5s, background-color 1s, color 1s;
+  border-radius: 190px;
+  line-height: 17vh;
+  cursor: pointer;
+}
+#contain .mf .con .button:nth-child(2) {
+  margin: 0 2vh 0 2vh;
+}
+#contain .mf .con .button:hover {
+  background-color: black;
+  transition: background-color 1s, color 1s, transform 5s;
+  color: white;
+}
+#contain .mf .options {
+  width: 30vh;
+  height: 100%;
+  box-shadow: 0 5px 0 #dedede;
+  background: linear-gradient(rgba(255, 255, 255, 0.1), #e8e8e8);
+  border-radius: 1vh;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform-origin: left 0 0;
+  transform: rotateY(87deg);
+  transition: transform 1s;
+}
+#contain .mf .options .option {
+  font-family: "sonic";
+  font-size: 3vh;
+  color: #1a1a1a;
+  text-align: center;
+  animation-name: pulse;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  margin:14vh 0 1vh 0;
+}
+#contain .mf .about {
+  width: 30vh;
+  height: 100%;
+  box-shadow: 3px 5px 0 #838080;
+  background: linear-gradient(rgba(255, 255, 255, 0.1), #e8e8e8);
+  border-radius: 1vh;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform-origin: left 0 0;
+  transform: rotateY(87deg);
+  transition: transform 1s;
+}
+.who {
+  font-family: "sonic";
+  font-size: 20px;
+  color: #1a1a1a;
+  text-align: center;
+  animation-name: pulse;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  margin: 20vh 0 1vh 0;
+}
+.member {
+  font-family: "sonic";
+  font-size: 14px;
+  color: #1a1a1a;
+  text-align: center;
+  animation-name: pulse;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  margin: 2vh 0 1vh 0;
+}
+
+
+.ca {
+  width: 111vh;
+}
+.pa {
+  width: 111vh;
+}
+.bridge{
+  color: #17569b;
+  text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.05, 1.05) rotateZ(-1deg);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}

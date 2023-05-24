@@ -1,0 +1,44 @@
+<<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="map.css">
+    <meta http-equiv="page-enter" content="blendTrans(duration=0.3)">
+<meta http-equiv="page-exit" content="blendTrans(duration=0.3)">
+</head>
+<body>
+    <div id = "story">
+        <div id = "line">
+            <div id = "storyline">
+                <p id = "p1">Eggman is trying to steal all the Earth's electricity!!!</p>
+                <p id = "p2" style="visibility: hidden;">Please help Sonic stop Eggman and save the Earth!!!</p>
+                <script type="text/javascript" language="javascript">function see(){    
+                    document.getElementById("p2").style.visibility="visible";
+                    }
+                    self.setTimeout("see()", 5050);
+                    
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <figure id = "sonicmap">
+        <img src="pic/sonicmap.png" alt="sonicmap">
+        <figcaption>Sonic</figcaption>
+    </figure>
+    <figure id = "shadowmap">
+        <img src="pic/shadowmap.png" alt="shadowmap">
+        <figcaption>Shadow</figcaption>
+    </figure>
+    <figure id = "eggmanmap">
+        <img src="pic/eggmanmap.png" alt="eggmanmap">
+        <figcaption>Egg Man</figcaption>
+    </figure>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src="map.js"></script>
+</body>
+
+</html>
+
