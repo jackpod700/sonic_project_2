@@ -98,6 +98,10 @@ function setBackground(level) {
   back.style.backgroundRepeat = "no-repeat";
   back.style.backgroundSize = "cover";
 }
+function setLevelBar(level) {
+  var bar = document.getElementById("level-bar");
+  bar.innerText = "-- level" + level + " --";
+}
 
 //공
 class Ball {
@@ -501,6 +505,7 @@ class Game {
     }
     this.ball[1] = null;
     setBackground(level);
+    setLevelBar(level);
   }
 
   update() {
