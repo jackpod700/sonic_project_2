@@ -201,12 +201,26 @@ class Eggman1{
       var temp;
 
       if(ck==1){
-        if(((bossy-ball.y)/bossx-ball.x)>1){
-          if(ball.mx > 0 && ball.my > 0){
+        if((bossy-ball.y)/(bossx-ball.x)>0){
+          if((bossy-ball.y)/(bossx-ball.x)>1){
             temp = ball.mx;
             ball.mx = -ball.my;
-            ball.my = -ball.mx;
-          } else if(ball.mx > 0 && ball.){
+            ball.my = -temp;
+          } else if((bossy-ball.y)/(bossx-ball.x)<1){
+            temp = ball.mx;
+            ball.mx = ball.my;
+            ball.my = -temp;
+          } 
+        }else if((bossy-ball.y)/(bossx-ball.x)< 0){
+          if((bossy-ball.y)/(bossx-ball.x)> -1){
+            temp = ball.mx;
+            ball.mx = -ball.my;
+            ball.my = temp;
+          } else if((bossy-ball.y)/(bossx-ball.x)<-1){
+            temp = ball.mx;
+            ball.mx = -ball.my;
+            
+          }
         }
 
         ck = 0;
