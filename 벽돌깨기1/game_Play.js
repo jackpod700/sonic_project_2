@@ -16,7 +16,7 @@ var score = 0; //게임 총 점수 - 게임 새로 시작할때 초기화 필요
 $(document).ready(function () {
   startGame(localStorage.getItem("level"));
   $("#pause_btn").on("click", function () {
-    game.state = "pause";
+    if (game.state == "play") game.state = "pause";
   });
 });
 
@@ -357,6 +357,7 @@ class Bricks {
       //블럭 없애기
       this.data[row][col] = 0;
       this.count--;
+      score++; //블럭당 점수 1점( 수정 가능 )
       return true;
     } else return false;
   }
@@ -486,10 +487,12 @@ document.addEventListener("keydown", (e) => {
   ) {
     //Main-Menu
     if (myReq) cancelAnimationFrame(myReq);
+    score = 0; //점수 초기화
     location.href = "../메뉴/프로젝트/menu/menu.html";
   }
   if (key == "r" && (game.state == "lose" || game.state == "clear")) {
     //Retry
+    score = 0; //점수 초기화
     startGame(g_level);
   }
 });
@@ -530,7 +533,6 @@ class Game {
 
   update() {
     if (this.state == "start") {
-      //  this.state = "pause"; //테스트용 삭제 필!!!!!!!!!!!!!!!!1
       this.timeCount++;
       if (this.timeCount >= 100) this.state = "play";
       return;
@@ -616,6 +618,7 @@ class Game {
     } else {
       this.boss.draw(ctx);
     }
+    document.getElementById("score_count").innerHTML = score;
   }
 }
 //결과+멈춤창 함수
@@ -629,6 +632,7 @@ function resultScreen(result) {
   if (result == "END") resultScreen_end();
   if (result == "PAUSE") resultScreen_pause();
 }
+//다음 스테이지 넘어가는 캔버스 그리기
 function resultScreen_nextStage() {
   if (myReq) cancelAnimationFrame(myReq);
   ctx.beginPath();
@@ -654,7 +658,40 @@ function resultScreen_nextStage() {
     }
   }, 1000);
 }
-function resultScreen_end() {}
+var continue_img = new Image();
+continue_img.src = "resultScreen_btn/continue.png";
+var main_menu_img = new Image();
+main_menu_img.src = "resultScreen_btn/main-menu.png";
+var retry_img = new Image();
+retry_img.src = "resultScreen_btn/retry.png";
+//종료(클리어 or 실패) 결과 화면 캔버스 그리기
+function resultScreen_end() {
+  ctx.beginPath();
+  ctx.fillStyle = "#ff8831";
+  ctx.font = "40px sonic";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  if (game.state == "lose") var str = "You Lose..";
+  else var str = "You Win!";
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.4);
+
+  ctx.fillStyle = "#17569b";
+  ctx.font = "20px sonic";
+  ctx.textBaseline = "middle";
+  var str = "Your score: " + score;
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
+
+  ctx.font = "15px sonic";
+  ctx.fillStyle = "#ff8832";
+  ctx.fillText("Retry", WIDTH * 0.37, HEIGHT * 0.7);
+  ctx.drawImage(retry_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+
+  ctx.fillStyle = "#ff8833";
+  ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
+  ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
+  ctx.closePath();
+}
+//멈춤 화면 캔버스 그리기
 function resultScreen_pause() {
   ctx.beginPath();
   ctx.fillStyle = "#ff8831";
@@ -672,13 +709,14 @@ function resultScreen_pause() {
 
   ctx.font = "15px sonic";
   ctx.fillStyle = "#ff8832";
-  ctx.fillText("Continue", WIDTH * 0.35, HEIGHT * 0.6);
+  ctx.fillText("Continue", WIDTH * 0.37, HEIGHT * 0.7);
+  ctx.drawImage(continue_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
 
   ctx.fillStyle = "#ff8833";
-  ctx.fillText("Main-Menu", WIDTH * 0.65, HEIGHT * 0.6);
+  ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
+  ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
   ctx.closePath();
 }
-function canvas_resultScreen_btn(e) {}
 
 //반복 함수
 function mainLoop() {
