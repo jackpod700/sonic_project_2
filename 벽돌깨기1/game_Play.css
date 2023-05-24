@@ -23,12 +23,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
-#back-ground {
-  background-color: orange; /**임시**/
-  background-image: url("backTmp.gif");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 #main-screen {
   background-color: black; /**임시**/
   width: 700px;
