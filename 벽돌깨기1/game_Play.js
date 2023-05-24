@@ -476,6 +476,22 @@ document.addEventListener("keydown", (e) => {
       document.getElementById("Knuckles_count").innerText = Knuckles;
     }
   }
+  if (key == "c" && game.state == "pause") {
+    //continue
+    game.state = "play";
+  }
+  if (
+    key == "m" &&
+    (game.state == "pause" || game.state == "lose" || game.state == "clear")
+  ) {
+    //Main-Menu
+    if (myReq) cancelAnimationFrame(myReq);
+    location.href = "../메뉴/프로젝트/menu/menu.html";
+  }
+  if (key == "r" && (game.state == "lose" || game.state == "clear")) {
+    //Retry
+    startGame(g_level);
+  }
 });
 
 class Game {
@@ -514,7 +530,7 @@ class Game {
 
   update() {
     if (this.state == "start") {
-      if (this.level == 1) this.state = "go2Lv2"; //테스트용 삭제 필!!!!!!!!!!!!!!!!1
+      //  this.state = "pause"; //테스트용 삭제 필!!!!!!!!!!!!!!!!1
       this.timeCount++;
       if (this.timeCount >= 100) this.state = "play";
       return;
@@ -617,14 +633,14 @@ function resultScreen_nextStage() {
   if (myReq) cancelAnimationFrame(myReq);
   ctx.beginPath();
   ctx.fillStyle = "#ff8831";
-  ctx.font = "30px sonic";
+  ctx.font = "40px sonic";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   var str = "Go stage" + (Number(g_level) + 1);
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.45);
 
   ctx.fillStyle = "#17569b";
-  ctx.font = "15px sonic";
+  ctx.font = "20px sonic";
   ctx.textBaseline = "middle";
   var str = "current score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.55);
@@ -639,7 +655,30 @@ function resultScreen_nextStage() {
   }, 1000);
 }
 function resultScreen_end() {}
-function resultScreen_pause() {}
+function resultScreen_pause() {
+  ctx.beginPath();
+  ctx.fillStyle = "#ff8831";
+  ctx.font = "40px sonic";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  var str = "Pause";
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.4);
+
+  ctx.fillStyle = "#17569b";
+  ctx.font = "20px sonic";
+  ctx.textBaseline = "middle";
+  var str = "current score: " + score;
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
+
+  ctx.font = "15px sonic";
+  ctx.fillStyle = "#ff8832";
+  ctx.fillText("Continue", WIDTH * 0.35, HEIGHT * 0.6);
+
+  ctx.fillStyle = "#ff8833";
+  ctx.fillText("Main-Menu", WIDTH * 0.65, HEIGHT * 0.6);
+  ctx.closePath();
+}
+function canvas_resultScreen_btn(e) {}
 
 //반복 함수
 function mainLoop() {

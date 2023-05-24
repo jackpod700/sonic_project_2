@@ -24,13 +24,12 @@ a {
   color: inherit;
 }
 #back-ground {
-  background-color: orange; /**임시**/
   background-image: url("backTmp.gif");
   background-repeat: no-repeat;
   background-size: cover;
 }
 #main-screen {
-  background-color: black; /**임시**/
+  background-color: black;
   width: 700px;
   height: 1000px;
   margin: auto;
