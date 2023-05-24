@@ -2,7 +2,11 @@ $(".options").hide()
 $(".about").hide()
 var AudioContext;
 var audioContext;
+var bgVol;
+var mainVol;
 
+localStorage.setItem('bgVol',bgVol);
+localStorage.setItem('effVol',mainVol);
 
 function init() {
   oOpen = false
@@ -27,6 +31,8 @@ function start() {
 function controlSound() {
   $(".sound-bg").prop("volume", bgVol)
   $(".sound-1").prop("volume", mainVol)
+  localStorage.setItem('bgVol',bgVol);
+  localStorage.setItem('effVol',mainVol);
 }
 
 function controlMusic() {

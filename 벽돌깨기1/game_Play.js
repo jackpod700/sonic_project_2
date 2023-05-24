@@ -16,10 +16,34 @@ var sonicimg_count=0;
 var ringimg_count=0;
 var supersonicimg_count=0;
 var Knucklesimg_count=0;
+//볼륨 변수
+var bgVol;//배경볼륨
+var effVol;//이펙트볼륨
+//사운드 설정
+function controlSound() {
+  $(".sound-bg").prop("volume", bgVol);
+  // $(".sound-1").prop("volume", mainVol)
+}
+
+function controlMusic() {
+  $('.sound-bg').get(0).play();
+  
+  setTimeout(function() { controlMusic() }, 1);
+}
 
 $(document).ready(function () {
   //레벨에 맞게 게임 자동 시작
-  startGame(localStorage.getItem("level"));
+  var level = localStorage.getItem("level");
+  startGame(level);
+  //볼륨 설정
+  bgVol=localStorage.getItem('bgVol');
+  effVol=localStorage.getItem('effVol');
+  //음악 종류 설정
+  if(level==1) $(".sound-bg").attr("src","music/lv1_bgm.mp3");
+  else if(level==2) $(".sound-bg").attr("src","music/lv2_bgm.mp3");
+  else if(level==3) $(".sound-bg").attr("src","music/boss1.mp3");
+  controlSound();
+  controlMusic();
   //이미지들 돌리기
   setInterval(function(){
     //링
