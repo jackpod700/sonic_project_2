@@ -4,3 +4,4 @@ function start(){
 $("#start_button").click(function(){
     start()
 })
+localStorage.setItem('level',2);

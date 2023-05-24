@@ -12,6 +12,8 @@ var clock=0;//공 속도저하 아이템(시간 아이템이라 하겠음)
 var Knuckles=0;//너클즈 아이템
 var is_supersonic=false;//슈퍼소닉 상태
 
+$(document).ready(function(){startGame(localStorage.getItem('level'))});
+
 
 //레벨 을 인자로 받아 게임 시작
 function startGame(level) {
@@ -573,8 +575,3 @@ function mainLoop() {
   if (game.state == "go2Lv3") resultScreen("go2Lv3");
   if (game.state == "clear") resultScreen("CLEAR");
 }
-
-/**임시 버튼 **/
-document.getElementById("Lv1").onclick = () => startGame(1);
-document.getElementById("Lv2").onclick = () => startGame(2);
-document.getElementById("Lv3").onclick = () => startGame(3);
