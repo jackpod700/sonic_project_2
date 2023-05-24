@@ -304,7 +304,7 @@ class Brick {
     if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
     if (!this.has_ring && !this.has_supersonic)
       this.has_clock = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic && !this.has_clock)
+    if (!this.has_ring && !this.has_supersonic && !this.has_darksonic)
       this.has_Knuckles = Math.random() > 0.95;
   }
 }
@@ -558,6 +558,7 @@ class Game {
         ring--;
         document.getElementById("ring_count").innerText = ring;
         is_supersonic = false;
+        is_darksonic = false;
       } else {
         this.state = "end";
       }
@@ -605,8 +606,8 @@ function mainLoop() {
   myReq = requestAnimationFrame(mainLoop);
   game.update();
   game.draw();
-  if (game.state == "end") resultScreen("RETRY");
-  if (game.state == "go2Lv2") location.href = "../메뉴/프로젝트/item_ex/explain2.html";
-  if (game.state == "go2Lv3") location.href = "../메뉴/프로젝트/item_ex/explain3.html";
+  if (game.state == "end") resultScreen("END");
+  if (game.state == "go2Lv2") resultScreen("go2Lv2");
+  if (game.state == "go2Lv3") resultScreen("go2Lv3");
   if (game.state == "clear") resultScreen("CLEAR");
 }
