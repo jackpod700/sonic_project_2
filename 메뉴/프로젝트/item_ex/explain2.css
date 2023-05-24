@@ -92,3 +92,7 @@
     font-size: 50px;
     color: white;
   }
+
+  #start_button:hover{
+    color:black;
+  }
