@@ -81,6 +81,12 @@ for (var i = 0; i < 3; i++) {
   paddle_img[i] = new Image();
   paddle_img[i].src = "paddle/paddle" + (i + 1) + ".png";
 }
+var lv1Img=new Image();
+lv1Img.src="blocks/lv1block.png";
+var lv2Img=new Image();
+lv2Img.src="blocks/lv2block.png";
+var lv3Img=new Image();
+lv3Img.src="blocks/lv3block.png";
 /**임시 색상 **/
 const COLOR = "dodgerblue";
 /**data(brick 배치) 레벨별로 디자인 후 정의 필요 **/
@@ -95,9 +101,9 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c % 2) line[c] = new Brick("red", 2);
+        if (c % 2) line[c] = new Brick(lv1Img, 2);
         //아이템 랜덤 생성시 브릭을 매번 생성해줘야됨
-        else line[c] = new Brick("blue", 1);
+        else line[c] = new Brick(lv1Img, 1);
       }
       data.push(line);
     }
@@ -110,8 +116,8 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c % 2) line[c] = new Brick("red", 2);
-        else line[c] = new Brick("blue", 2);
+        if (c % 2) line[c] = new Brick(lv2Img, 2);
+        else line[c] = new Brick(lv2Img, 2);
       }
       data.push(line);
     }
@@ -325,8 +331,8 @@ class Paddle {
 
 //브릭
 class Brick {
-  constructor(color, hp) {
-    this.color = color;
+  constructor(img, hp) {
+    this.img = img;
     this.hp = hp;
     //아이템들 추가
     this.has_ring = Math.random() > 0.7;
@@ -389,9 +395,13 @@ class Bricks {
         var x_Brick = this.x + this.brickWidth * c;
         var y_Brick = this.y + this.brickHeight * r;
         ctx.beginPath();
-        ctx.fillStyle = this.data[r][c].color; //이미지로 수정!
-        ctx.fillRect(x_Brick, y_Brick, this.brickWidth, this.brickHeight);
-        ctx.strokeRect(x_Brick, y_Brick, this.brickWidth, this.brickHeight);
+        ctx.drawImage(
+          this.data[r][c].img,
+          x_Brick,
+          y_Brick,
+          this.brickWidth,
+          this.brickHeight
+        );
         ctx.closePath();
         //블럭에 아이템이 들어있을 시 아이템 이미지 삽입
         if (this.data[r][c].has_ring) {
