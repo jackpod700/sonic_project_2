@@ -35,7 +35,6 @@ a {
   height: 1000px;
   margin: auto;
   overflow: hidden;
-  border-radius: 10px;
 }
 #game-screen {
   background-color: #0b2442; /**임시**/
@@ -108,10 +107,19 @@ input[type="button"] {
 }
 #level-bar {
   width: 100%;
-  height: 90px;
+  height: 70px;
   font-family: sonic, "serif";
   color: #ff8831;
   font-size: 30px;
   text-align: center;
-  line-height: 90px;
+  line-height: 70px;
+}
+#score-bar {
+  width: 100%;
+  height: 30px;
+  font-family: sonic, "serif";
+  color: #17569b;
+  font-size: 15px;
+  text-align: center;
+  line-height: 30px;
 }
