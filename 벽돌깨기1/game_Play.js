@@ -11,9 +11,13 @@ var supersonic = 0; //슈퍼소닉 아이템
 var clock = 0; //공 속도저하 아이템(시간 아이템이라 하겠음)
 var Knuckles = 0; //너클즈 아이템
 var is_supersonic = false; //슈퍼소닉 상태
+var score = 0; //게임 총 점수 - 게임 새로 시작할때 초기화 필요
 
 $(document).ready(function () {
   startGame(localStorage.getItem("level"));
+  $("#pause_btn").on("click", function () {
+    game.state = "pause";
+  });
 });
 
 //레벨 을 인자로 받아 게임 시작
@@ -481,7 +485,7 @@ class Game {
 
     this.level = level;
 
-    this.state = "start"; //게임의 현재 상태("start" / "play" // "end" // "clear")
+    this.state = "start"; //게임의 현재 상태("start" / "play" // "lose" // "clear")
     this.timeCount = 0;
     this.paddle = new Paddle(
       PADDLE_X,
@@ -510,6 +514,7 @@ class Game {
 
   update() {
     if (this.state == "start") {
+      if (this.level == 1) this.state = "go2Lv2"; //테스트용 삭제 필!!!!!!!!!!!!!!!!1
       this.timeCount++;
       if (this.timeCount >= 100) this.state = "play";
       return;
@@ -565,7 +570,7 @@ class Game {
         is_supersonic = false;
         is_darksonic = false;
       } else {
-        this.state = "end";
+        this.state = "lose";
       }
     }
     //너클즈가 떨어진다면 너클즈 삭제
@@ -597,22 +602,52 @@ class Game {
     }
   }
 }
-//임시 결과창 함수
+//결과+멈춤창 함수
 function resultScreen(result) {
-  ctx.font = "bold 70px arial";
-  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(80, 110, 550, 550);
+  ctx.globalAlpha = 0.7;
+  ctx.closePath();
+  if (result == "nextStage") resultScreen_nextStage();
+  if (result == "END") resultScreen_end();
+  if (result == "PAUSE") resultScreen_pause();
+}
+function resultScreen_nextStage() {
+  if (myReq) cancelAnimationFrame(myReq);
+  ctx.beginPath();
+  ctx.fillStyle = "#ff8831";
+  ctx.font = "30px sonic";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(result, WIDTH / 2, HEIGHT / 2);
+  var str = "Go stage" + (Number(g_level) + 1);
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.45);
+
+  ctx.fillStyle = "#17569b";
+  ctx.font = "15px sonic";
+  ctx.textBaseline = "middle";
+  var str = "current score: " + score;
+  ctx.fillText(str, WIDTH / 2, HEIGHT * 0.55);
+  ctx.closePath();
+  var timeCnt = 0;
+  var req = setInterval(function () {
+    timeCnt++;
+    if (timeCnt == 3) {
+      clearInterval(req);
+      startGame(Number(g_level) + 1);
+    }
+  }, 1000);
 }
+function resultScreen_end() {}
+function resultScreen_pause() {}
 
 //반복 함수
 function mainLoop() {
   myReq = requestAnimationFrame(mainLoop);
   game.update();
   game.draw();
-  if (game.state == "end") resultScreen("END");
-  if (game.state == "go2Lv2") resultScreen("go2Lv2");
-  if (game.state == "go2Lv3") resultScreen("go2Lv3");
-  if (game.state == "clear") resultScreen("CLEAR");
+  if (game.state == "lose" || game.state == "clear") resultScreen("END");
+  if (game.state == "go2Lv2" || game.state == "go2Lv3")
+    resultScreen("nextStage");
+  if (game.state == "pause") resultScreen("PAUSE");
 }
