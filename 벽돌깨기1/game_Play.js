@@ -29,7 +29,7 @@ function controlSound() {
   $("#sound-supersonic").prop("volume",effVol);
   $("#sound-item-get").prop("volume",effVol);
   $("#sound-clock").prop("volume",effVol);
-
+  $("#sound-knucles").prop("volume",effVol);
 }
 
 function controlMusic() {
@@ -545,6 +545,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "3") {
     //너클즈 사용
     if (Knuckles > 0) {
+      $('#sound-knuckles').get(0).play();
       game.ball[1] = new Ball(
         game.paddle.center,
         PADDLE_Y - BALL_RADIUS,
