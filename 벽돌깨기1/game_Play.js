@@ -96,6 +96,17 @@ function startGame(level) {
   if (level != 3) {
     brickData = mkBricks(g_level);
   }
+  //레벨에 따라 아이템창 변경
+  if(g_level==1){
+    $("#supersonic").css('display','none');
+    $("#clock").css('display','none');
+    $("#knuckles").css('display','none');
+    $("#items").css('width','120px');
+  }
+  else if(g_level==2){
+    $("#knuckles").css('display','none');
+    $("#items").css('width','350px');
+  }
   game = new Game(g_level);
   mainLoop();
 }
