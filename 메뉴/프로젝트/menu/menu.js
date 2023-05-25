@@ -2,7 +2,15 @@ $(".options").hide();
 $(".about").hide();
 var AudioContext;
 var audioContext;
+var bgVol;
+var mainVol;
 
+<<<<<<< HEAD
+=======
+localStorage.setItem('bgVol',bgVol);
+localStorage.setItem('effVol',mainVol);
+
+>>>>>>> SSJ2
 function init() {
   oOpen = false;
   aOpen = false;
@@ -23,8 +31,15 @@ function start() {
 }
 
 function controlSound() {
+<<<<<<< HEAD
   $(".sound-bg").prop("volume", bgVol);
   $(".sound-1").prop("volume", mainVol);
+=======
+  $(".sound-bg").prop("volume", bgVol)
+  $(".sound-1").prop("volume", mainVol)
+  localStorage.setItem('bgVol',bgVol);
+  localStorage.setItem('effVol',mainVol);
+>>>>>>> SSJ2
 }
 
 function controlMusic() {

@@ -11,17 +11,44 @@ var supersonic = 0; //슈퍼소닉 아이템
 var clock = 0; //공 속도저하 아이템(시간 아이템이라 하겠음)
 var Knuckles = 0; //너클즈 아이템
 var is_supersonic = false; //슈퍼소닉 상태
-
-//각 이미지 돌리기 변수
-var sonicimg_count = 0;
-var ringimg_count = 0;
-var supersonicimg_count = 0;
-var Knucklesimg_count = 0;
 var score = 0; //게임 총 점수 - 게임 새로 시작할때 초기화 필요
+//각 이미지 돌리기 변수
+var sonicimg_count=0;
+var ringimg_count=0;
+var supersonicimg_count=0;
+var Knucklesimg_count=0;
+//볼륨 변수
+var bgVol;//배경볼륨
+var effVol;//이펙트볼륨
+//사운드 설정
+function controlSound() {
+  $("#sound-bg").prop("volume", bgVol);
+  $("#soundsound-ring-get").prop("volume", effVol);
+  $("#sound-ring-fall").prop("volume", effVol);
+  $("#sound-jump").prop("volume", effVol);
+
+}
+
+function controlMusic() {
+  $('#sound-bg').get(0).play();
+  
+  setTimeout(function() { controlMusic() }, 1);
+}
+>>>>>>> SSJ2
 
 $(document).ready(function () {
   //레벨에 맞게 게임 자동 시작
-  startGame(localStorage.getItem("level"));
+  var level = localStorage.getItem("level");
+  startGame(level);
+  //볼륨 설정
+  bgVol=localStorage.getItem('bgVol');
+  effVol=localStorage.getItem('effVol');
+  //음악 종류 설정
+  if(level==1) $("#sound-bg").attr("src","music/lv1_bgm.mp3");
+  else if(level==2) $("#sound-bg").attr("src","music/lv2_bgm.mp3");
+  else if(level==3) $("#sound-bg").attr("src","music/boss1.mp3");
+  controlSound();
+  controlMusic();
   //이미지들 돌리기
   setInterval(function () {
     //링
@@ -319,6 +346,7 @@ class Paddle {
       ball.colx = ball.x;
       ball.coly = ball.y + ball.radius;
       ck = 1;
+      $('#sound-jump').get(0).play();
     }
   }
 
@@ -345,7 +373,7 @@ class Brick {
     if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
     if (!this.has_ring && !this.has_supersonic)
       this.has_clock = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic && !this.has_darksonic)
+    if (!this.has_ring && !this.has_supersonic && !this.has_clock)
       this.has_Knuckles = Math.random() > 0.95;
   }
 }
@@ -377,6 +405,7 @@ class Bricks {
       if (this.data[row][col].has_ring) {
         ring++;
         document.getElementById("ring_count").innerText = ring;
+        $("#sound-ring-get").get(0).play()
       } else if (this.data[row][col].has_supersonic) {
         supersonic++;
         document.getElementById("supersonic_count").innerText = supersonic;
@@ -630,7 +659,7 @@ class Game {
         ring--;
         document.getElementById("ring_count").innerText = ring;
         is_supersonic = false;
-        is_darksonic = false;
+        $("#sound-ring-fall").get(0).play()
       } else {
         this.state = "lose";
       }
