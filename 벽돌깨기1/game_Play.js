@@ -23,9 +23,13 @@ var effVol; //이펙트볼륨
 //사운드 설정
 function controlSound() {
   $("#sound-bg").prop("volume", bgVol);
-  $("#soundsound-ring-get").prop("volume", effVol);
+  $("#sound-ring-get").prop("volume", effVol);
   $("#sound-ring-fall").prop("volume", effVol);
   $("#sound-jump").prop("volume", effVol);
+  $("#sound-supersonic").prop("volume",effVol);
+  $("#sound-item-get").prop("volume",effVol);
+  $("#sound-clock").prop("volume",effVol);
+  $("#sound-knucles").prop("volume",effVol);
 }
 
 function controlMusic() {
@@ -408,12 +412,15 @@ class Bricks {
         document.getElementById("ring_count").innerText = ring;
         $("#sound-ring-get").get(0).play();
       } else if (this.data[row][col].has_supersonic) {
+        $('#sound-item-get').get(0).play();
         supersonic++;
         document.getElementById("supersonic_count").innerText = supersonic;
       } else if (this.data[row][col].has_clock) {
+        $('#sound-item-get').get(0).play();
         clock++;
         document.getElementById("clock_count").innerText = clock;
       } else if (this.data[row][col].has_Knuckles) {
+        $('#sound-item-get').get(0).play();
         Knuckles++;
         document.getElementById("Knuckles_count").innerText = Knuckles;
       }
@@ -510,6 +517,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "2") {
     //시간아이템 사용
     if (clock > 0) {
+      $('#sound-clock').get(0).play();
       //소닉 속도 변경
       //마지막 * 숫자가 시간아이템 사용시의 속도
       game.ball[0].mx = (game.ball[0].mx / game.ball[0].speed) * 1;
@@ -540,6 +548,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "3") {
     //너클즈 사용
     if (Knuckles > 0) {
+      $('#sound-knuckles').get(0).play();
       game.ball[1] = new Ball(
         game.paddle.center,
         PADDLE_Y - BALL_RADIUS,
