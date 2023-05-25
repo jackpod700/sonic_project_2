@@ -28,6 +28,8 @@ function controlSound() {
   $("#sound-jump").prop("volume", effVol);
   $("#sound-supersonic").prop("volume",effVol);
   $("#sound-item-get").prop("volume",effVol);
+  $("#sound-clock").prop("volume",effVol);
+
 }
 
 function controlMusic() {
@@ -512,6 +514,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "2") {
     //시간아이템 사용
     if (clock > 0) {
+      $('#sound-clock').get(0).play();
       //소닉 속도 변경
       //마지막 * 숫자가 시간아이템 사용시의 속도
       game.ball[0].mx = (game.ball[0].mx / game.ball[0].speed) * 1;
