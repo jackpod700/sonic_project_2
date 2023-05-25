@@ -34,7 +34,6 @@ function controlMusic() {
   
   setTimeout(function() { controlMusic() }, 1);
 }
->>>>>>> SSJ2
 
 $(document).ready(function () {
   //레벨에 맞게 게임 자동 시작
