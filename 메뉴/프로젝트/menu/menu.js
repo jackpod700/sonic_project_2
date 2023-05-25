@@ -4,15 +4,17 @@ var AudioContext;
 var audioContext;
 var bgVol;
 var mainVol;
-
+var speedselect;
 localStorage.setItem('bgVol',bgVol);
 localStorage.setItem('effVol',mainVol);
+localStorage.setItem('speedselect', speedselect);
 
 function init() {
   oOpen = false;
   aOpen = false;
   bgVol = 1;
   mainVol = 1;
+  speedselect=1;
   animate();
   controlSound();
   controlMusic();
@@ -121,6 +123,19 @@ $(".effsound").slider({
     controlSound();
   },
 });
+
+$(".speedselect").slider({
+  step: 0.25,
+  min: 0.5,
+  max: 1.5,
+  value: 1,
+  slide: function (event, ui) {
+    $(".option:nth-child(5)").text("Speed: X" + ui.value + "");
+    speedselect = ui.value * 1;
+    controlSound();
+  },
+});
+
 window.onload = function () {
   init();
 };
