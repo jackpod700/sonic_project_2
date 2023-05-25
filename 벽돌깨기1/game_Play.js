@@ -4,7 +4,7 @@ var canvasX = canvas.offsetLeft;
 var game = null; //Game 클래스 객체
 var g_level = 0; //현재 레벨 상태
 var ballSpeeds = [6, 7, 10];
-var userballSpeed=parseFloat(localStorage.getItem('speedselect'));
+var userballSpeed = parseFloat(localStorage.getItem("speedselect"));
 var brickData; //현재 벽돌 데이터
 var myReq; //rAF 아이디
 var ring = 0; //링 개수
@@ -19,22 +19,21 @@ var ringimg_count = 0;
 var supersonicimg_count = 0;
 var Knucklesimg_count = 0;
 //볼륨 변수
-var bgVol; //배경볼륨
-var effVol; //이펙트볼륨
+var bgVol = 1; //배경볼륨
+var effVol = 1; //이펙트볼륨
 //사운드 설정
 function controlSound() {
   $("#sound-bg").prop("volume", bgVol);
   $("#sound-ring-get").prop("volume", effVol);
   $("#sound-ring-fall").prop("volume", effVol);
   $("#sound-jump").prop("volume", effVol);
-  $("#sound-supersonic").prop("volume",effVol);
-  $("#sound-item-get").prop("volume",effVol);
-  $("#sound-clock").prop("volume",effVol);
-  $("#sound-knucles").prop("volume",effVol);
+  $("#sound-supersonic").prop("volume", effVol);
+  $("#sound-item-get").prop("volume", effVol);
+  $("#sound-clock").prop("volume", effVol);
+  $("#sound-knucles").prop("volume", effVol);
 }
 
 function controlMusic() {
-  window.focus();
   $("#sound-bg").get(0).play();
 
   setTimeout(function () {
@@ -44,10 +43,11 @@ function controlMusic() {
 
 $(document).ready(function () {
   //공 속도설정
-  ballSpeeds[0]=ballSpeeds[0]*userballSpeed;
-  ballSpeeds[1]=ballSpeeds[1]*userballSpeed;
-  ballSpeeds[2]=ballSpeeds[2]*userballSpeed;
+  ballSpeeds[0] = ballSpeeds[0] * userballSpeed;
+  ballSpeeds[1] = ballSpeeds[1] * userballSpeed;
+  ballSpeeds[2] = ballSpeeds[2] * userballSpeed;
   //레벨에 맞게 게임 자동 시작
+
   var level = localStorage.getItem("level");
   startGame(level);
   //볼륨 설정
@@ -225,6 +225,7 @@ class Ball {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      $("#sound-wall-collide").get(0).play();
     }
     if (this.mx > 0 && this.collideX > right) {
       if (ck == 0) {
@@ -233,6 +234,7 @@ class Ball {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      $("#sound-wall-collide").get(0).play();
     }
     if (this.my < 0 && this.collideY < top) {
       if (ck == 0) {
@@ -241,6 +243,7 @@ class Ball {
       this.my *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      $("#sound-wall-collide").get(0).play();
     }
   }
 
@@ -417,15 +420,15 @@ class Bricks {
         document.getElementById("ring_count").innerText = ring;
         $("#sound-ring-get").get(0).play();
       } else if (this.data[row][col].has_supersonic) {
-        $('#sound-item-get').get(0).play();
+        $("#sound-item-get").get(0).play();
         supersonic++;
         document.getElementById("supersonic_count").innerText = supersonic;
       } else if (this.data[row][col].has_clock) {
-        $('#sound-item-get').get(0).play();
+        $("#sound-item-get").get(0).play();
         clock++;
         document.getElementById("clock_count").innerText = clock;
       } else if (this.data[row][col].has_Knuckles) {
-        $('#sound-item-get').get(0).play();
+        $("#sound-item-get").get(0).play();
         Knuckles++;
         document.getElementById("Knuckles_count").innerText = Knuckles;
       }
@@ -433,6 +436,7 @@ class Bricks {
       this.data[row][col] = 0;
       this.count--;
       score++; //블럭당 점수 1점( 수정 가능 )
+      $("#sound-brick-collide").get(0).play();
       return true;
     } else return false;
   }
@@ -522,7 +526,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "2") {
     //시간아이템 사용
     if (clock > 0) {
-      $('#sound-clock').get(0).play();
+      $("#sound-clock").get(0).play();
       //소닉 속도 변경
       //마지막 * 숫자가 시간아이템 사용시의 속도
       game.ball[0].mx = (game.ball[0].mx / game.ball[0].speed) * 1;
@@ -553,7 +557,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "3") {
     //너클즈 사용
     if (Knuckles > 0) {
-      $('#sound-knuckles').get(0).play();
+      $("#sound-knuckles").get(0).play();
       game.ball[1] = new Ball(
         game.paddle.center,
         PADDLE_Y - BALL_RADIUS,
@@ -582,6 +586,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "r" && (game.state == "lose" || game.state == "clear")) {
     //Retry
     score = 0; //점수 초기화
+    $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
     startGame(g_level);
   }
 });
@@ -626,6 +631,9 @@ class Game {
       if (this.timeCount >= 100) this.state = "play";
       return;
     }
+    //삭제 해ㅐ애ㅐ애
+    if (this.level == 2 && this.state == "go2Lv3") this.state = "clear"; //임시!!!!!!!!!!(보스전 만들면 삭제 필)
+    //삭제 해ㅐ애애ㅐㅇ
     if (this.state != "play") return;
 
     this.paddle.x = mouseX - PADDLE_WIDTH / 2;
@@ -757,6 +765,14 @@ var retry_img = new Image();
 retry_img.src = "resultScreen_btn/retry.png";
 //종료(클리어 or 실패) 결과 화면 캔버스 그리기
 function resultScreen_end() {
+  if (myReq) cancelAnimationFrame(myReq);
+  if (game.state == "lose") {
+    $("#sound-bg").attr("src", "music/gameOver_bgm.mp3");
+    $("#sound-bg").get(0).play();
+  } else if (game.state == "clear") {
+    $("#sound-bg").attr("src", "music/gameClear_bgm.mp3");
+    $("#sound-bg").get(0).play();
+  }
   ctx.beginPath();
   ctx.fillStyle = "#ff8831";
   ctx.font = "40px sonic";
@@ -781,12 +797,6 @@ function resultScreen_end() {
   ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
   ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
   ctx.closePath();
-
-  if (game.state == "lose") {
-    $("#sound-bg").attr("src", "music/gameOver_bgm.mp3");
-    $("#sound-bg").attr("loop", "True");
-    $("#sound-bg").get(0).play();
-  }
 }
 //멈춤 화면 캔버스 그리기
 function resultScreen_pause() {
