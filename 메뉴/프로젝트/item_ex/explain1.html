@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
-    <link rel="stylesheet" href="explain1.css">
-    <meta http-equiv="page-enter" content="blendTrans(duration=0.3)">
-<meta http-equiv="page-exit" content="blendTrans(duration=0.3)">
-</head>
-<body>
-    <div id = "story">
-        <div id = "line">
-            <div id = "storyline">
-                <p id = "p1">You got New Item!</p>
-                <img src="pic/ring-sonic.gif" width="140" height="100"/>
-                <p id="ringex">This Ring will revive you!!</p>
-                
-            </div>
+    <link rel="stylesheet" href="explain1.css" />
+    <meta http-equiv="page-enter" content="blendTrans(duration=0.3)" />
+    <meta http-equiv="page-exit" content="blendTrans(duration=0.3)" />
+  </head>
+  <body>
+    <div id="story">
+      <div id="line">
+        <div id="storyline">
+          <p id="p1">You got New Item!</p>
+          <img src="pic/ring-sonic.gif" width="140" height="100" />
+          <p id="ringex">This Ring will revive you!!</p>
         </div>
+      </div>
     </div>
     <div id="start">
-        <button id="start_button">START▶</button>
+      <button id="start_button">START▶</button>
     </div>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <audio
+      id="click-sound"
+      src="https://raw.githubusercontent.com/baronwatts/models/master/sonic_ring_sound.mp3"
+      type="audio/mp3"
+    ></audio>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="explain1.js"></script>
-</body>
+  </body>
 </html>

@@ -31,6 +31,8 @@ function controlSound() {
   $("#sound-item-get").prop("volume", effVol);
   $("#sound-clock").prop("volume", effVol);
   $("#sound-knucles").prop("volume", effVol);
+  $("#sound-wall-collide").prop("volume", effVol);
+  $("#sound-brick-collide").prop("volume", effVol);
 }
 
 function controlMusic() {
@@ -82,6 +84,7 @@ $(document).ready(function () {
     else supersonicimg_count++;
   }, 20);
   $("#pause_btn").on("click", function () {
+    $("#click-sound").get(0).play();
     if (game.state == "play") game.state = "pause";
   });
 });
@@ -572,6 +575,7 @@ document.addEventListener("keydown", (e) => {
   }
   if (key == "c" && game.state == "pause") {
     //continue
+    $("#click-sound").get(0).play();
     game.state = "play";
   }
   if (
@@ -580,11 +584,18 @@ document.addEventListener("keydown", (e) => {
   ) {
     //Main-Menu
     if (myReq) cancelAnimationFrame(myReq);
+    $("#click-sound").get(0).play();
     score = 0; //점수 초기화
-    location.href = "../메뉴/프로젝트/menu/menu.html";
+    setTimeout(function () {
+      $("body").fadeOut(1000);
+    }, 1000);
+    setTimeout(function () {
+      location.href = "../메뉴/프로젝트/menu/menu.html";
+    }, 2000);
   }
   if (key == "r" && (game.state == "lose" || game.state == "clear")) {
     //Retry
+    $("#click-sound").get(0).play();
     score = 0; //점수 초기화
     $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
     startGame(g_level);
