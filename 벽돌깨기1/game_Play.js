@@ -4,6 +4,7 @@ var canvasX = canvas.offsetLeft;
 var game = null; //Game 클래스 객체
 var g_level = 0; //현재 레벨 상태
 var ballSpeeds = [6, 7, 10];
+var userballSpeed=parseFloat(localStorage.getItem('speedselect'));
 var brickData; //현재 벽돌 데이터
 var myReq; //rAF 아이디
 var ring = 0; //링 개수
@@ -42,6 +43,10 @@ function controlMusic() {
 }
 
 $(document).ready(function () {
+  //공 속도설정
+  ballSpeeds[0]=ballSpeeds[0]*userballSpeed;
+  ballSpeeds[1]=ballSpeeds[1]*userballSpeed;
+  ballSpeeds[2]=ballSpeeds[2]*userballSpeed;
   //레벨에 맞게 게임 자동 시작
   var level = localStorage.getItem("level");
   startGame(level);

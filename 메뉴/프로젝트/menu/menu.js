@@ -34,6 +34,7 @@ function controlSound() {
   $(".sound-1").prop("volume", mainVol)
   localStorage.setItem('bgVol',bgVol);
   localStorage.setItem('effVol',mainVol);
+  localStorage.setItem('speedselect', speedselect);
 }
 
 function controlMusic() {
@@ -130,8 +131,8 @@ $(".speedselect").slider({
   max: 1.5,
   value: 1,
   slide: function (event, ui) {
-    $(".option:nth-child(5)").text("Speed: X" + ui.value + "");
-    speedselect = ui.value * 1;
+    $(".option:nth-child(5)").text("BallSpeed: X" + ui.value + "");
+    speedselect = ui.value;
     controlSound();
   },
 });
