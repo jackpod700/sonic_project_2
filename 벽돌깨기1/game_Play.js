@@ -18,8 +18,8 @@ var ringimg_count = 0;
 var supersonicimg_count = 0;
 var Knucklesimg_count = 0;
 //볼륨 변수
-var bgVol; //배경볼륨
-var effVol; //이펙트볼륨
+var bgVol = 1; //배경볼륨
+var effVol = 1; //이펙트볼륨
 //사운드 설정
 function controlSound() {
   $("#sound-bg").prop("volume", bgVol);
@@ -29,7 +29,6 @@ function controlSound() {
 }
 
 function controlMusic() {
-  window.focus();
   $("#sound-bg").get(0).play();
 
   setTimeout(function () {
@@ -38,7 +37,7 @@ function controlMusic() {
 }
 
 $(document).ready(function () {
-  //레벨에 맞게 게임 자동 시작
+  //레벨에 맞게 게임 자동  시작
   var level = localStorage.getItem("level");
   startGame(level);
   //볼륨 설정
@@ -216,6 +215,7 @@ class Ball {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      $("#sound-wall-collide").get(0).play();
     }
     if (this.mx > 0 && this.collideX > right) {
       if (ck == 0) {
@@ -224,6 +224,7 @@ class Ball {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      $("#sound-wall-collide").get(0).play();
     }
     if (this.my < 0 && this.collideY < top) {
       if (ck == 0) {
@@ -232,6 +233,7 @@ class Ball {
       this.my *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      $("#sound-wall-collide").get(0).play();
     }
   }
 
@@ -421,6 +423,7 @@ class Bricks {
       this.data[row][col] = 0;
       this.count--;
       score++; //블럭당 점수 1점( 수정 가능 )
+      $("#sound-brick-collide").get(0).play();
       return true;
     } else return false;
   }
@@ -567,6 +570,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "r" && (game.state == "lose" || game.state == "clear")) {
     //Retry
     score = 0; //점수 초기화
+    $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
     startGame(g_level);
   }
 });
@@ -742,6 +746,11 @@ var retry_img = new Image();
 retry_img.src = "resultScreen_btn/retry.png";
 //종료(클리어 or 실패) 결과 화면 캔버스 그리기
 function resultScreen_end() {
+  if (myReq) cancelAnimationFrame(myReq);
+  if (game.state == "lose") {
+    $("#sound-bg").attr("src", "music/gameOver_bgm.mp3");
+    $("#sound-bg").get(0).play();
+  }
   ctx.beginPath();
   ctx.fillStyle = "#ff8831";
   ctx.font = "40px sonic";
@@ -766,12 +775,6 @@ function resultScreen_end() {
   ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
   ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
   ctx.closePath();
-
-  if (game.state == "lose") {
-    $("#sound-bg").attr("src", "music/gameOver_bgm.mp3");
-    $("#sound-bg").attr("loop", "True");
-    $("#sound-bg").get(0).play();
-  }
 }
 //멈춤 화면 캔버스 그리기
 function resultScreen_pause() {
