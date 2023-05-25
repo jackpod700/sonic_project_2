@@ -89,7 +89,7 @@ html body {
   animation-name: pulse;
   animation-duration: 5s;
   animation-iteration-count: infinite;
-  margin:14vh 0 1vh 0;
+  margin:10vh 0 1vh 0;
 }
 #contain .mf .about {
   width: 30vh;
