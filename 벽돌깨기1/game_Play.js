@@ -21,12 +21,15 @@ var bgVol;//배경볼륨
 var effVol;//이펙트볼륨
 //사운드 설정
 function controlSound() {
-  $(".sound-bg").prop("volume", bgVol);
-  // $(".sound-1").prop("volume", mainVol)
+  $("#sound-bg").prop("volume", bgVol);
+  $("#soundsound-ring-get").prop("volume", effVol);
+  $("#sound-ring-fall").prop("volume", effVol);
+  $("#sound-jump").prop("volume", effVol);
+
 }
 
 function controlMusic() {
-  $('.sound-bg').get(0).play();
+  $('#sound-bg').get(0).play();
   
   setTimeout(function() { controlMusic() }, 1);
 }
@@ -39,9 +42,9 @@ $(document).ready(function () {
   bgVol=localStorage.getItem('bgVol');
   effVol=localStorage.getItem('effVol');
   //음악 종류 설정
-  if(level==1) $(".sound-bg").attr("src","music/lv1_bgm.mp3");
-  else if(level==2) $(".sound-bg").attr("src","music/lv2_bgm.mp3");
-  else if(level==3) $(".sound-bg").attr("src","music/boss1.mp3");
+  if(level==1) $("#sound-bg").attr("src","music/lv1_bgm.mp3");
+  else if(level==2) $("#sound-bg").attr("src","music/lv2_bgm.mp3");
+  else if(level==3) $("#sound-bg").attr("src","music/boss1.mp3");
   controlSound();
   controlMusic();
   //이미지들 돌리기
@@ -337,6 +340,7 @@ class Paddle {
       ball.colx = ball.x;
       ball.coly = ball.y + ball.radius;
       ck = 1;
+      $('#sound-jump').get(0).play();
     }
   }
 
@@ -363,7 +367,7 @@ class Brick {
     if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
     if (!this.has_ring && !this.has_supersonic)
       this.has_clock = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic && !this.has_darksonic)
+    if (!this.has_ring && !this.has_supersonic && !this.has_clock)
       this.has_Knuckles = Math.random() > 0.95;
   }
 }
@@ -395,6 +399,7 @@ class Bricks {
       if (this.data[row][col].has_ring) {
         ring++;
         document.getElementById("ring_count").innerText = ring;
+        $("#sound-ring-get").get(0).play()
       } else if (this.data[row][col].has_supersonic) {
         supersonic++;
         document.getElementById("supersonic_count").innerText = supersonic;
@@ -623,7 +628,7 @@ class Game {
         ring--;
         document.getElementById("ring_count").innerText = ring;
         is_supersonic = false;
-        is_darksonic = false;
+        $("#sound-ring-fall").get(0).play()
       } else {
         this.state = "end";
       }
