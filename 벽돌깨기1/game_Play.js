@@ -27,6 +27,7 @@ function controlSound() {
   $("#sound-ring-fall").prop("volume", effVol);
   $("#sound-jump").prop("volume", effVol);
   $("#sound-supersonic").prop("volume",effVol);
+  $("#sound-item-get").prop("volume",effVol);
 }
 
 function controlMusic() {
@@ -406,12 +407,15 @@ class Bricks {
         document.getElementById("ring_count").innerText = ring;
         $("#sound-ring-get").get(0).play()
       } else if (this.data[row][col].has_supersonic) {
+        $('#sound-item-get').get(0).play();
         supersonic++;
         document.getElementById("supersonic_count").innerText = supersonic;
       } else if (this.data[row][col].has_clock) {
+        $('#sound-item-get').get(0).play();
         clock++;
         document.getElementById("clock_count").innerText = clock;
       } else if (this.data[row][col].has_Knuckles) {
+        $('#sound-item-get').get(0).play();
         Knuckles++;
         document.getElementById("Knuckles_count").innerText = Knuckles;
       }
