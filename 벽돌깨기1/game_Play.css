@@ -109,6 +109,10 @@ input[type="button"] {
   font-size: 30px;
   text-align: center;
   line-height: 80px;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 }
 #score-bar {
   width: 100%;
@@ -118,4 +122,8 @@ input[type="button"] {
   font-size: 20px;
   text-align: center;
   line-height: 40px;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 }

@@ -586,7 +586,9 @@ document.addEventListener("keydown", (e) => {
   if (key == "r" && (game.state == "lose" || game.state == "clear")) {
     //Retry
     score = 0; //점수 초기화
-    $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
+    if(g_level<3) $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
+    else $("#sound-bg").attr("src", "music/boss1.mp3");
+    controlMusic();
     startGame(g_level);
   }
 });
