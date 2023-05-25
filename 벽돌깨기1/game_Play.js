@@ -13,26 +13,28 @@ var Knuckles = 0; //너클즈 아이템
 var is_supersonic = false; //슈퍼소닉 상태
 var score = 0; //게임 총 점수 - 게임 새로 시작할때 초기화 필요
 //각 이미지 돌리기 변수
-var sonicimg_count=0;
-var ringimg_count=0;
-var supersonicimg_count=0;
-var Knucklesimg_count=0;
+var sonicimg_count = 0;
+var ringimg_count = 0;
+var supersonicimg_count = 0;
+var Knucklesimg_count = 0;
 //볼륨 변수
-var bgVol;//배경볼륨
-var effVol;//이펙트볼륨
+var bgVol; //배경볼륨
+var effVol; //이펙트볼륨
 //사운드 설정
 function controlSound() {
   $("#sound-bg").prop("volume", bgVol);
   $("#soundsound-ring-get").prop("volume", effVol);
   $("#sound-ring-fall").prop("volume", effVol);
   $("#sound-jump").prop("volume", effVol);
-  
 }
 
 function controlMusic() {
-  $('#sound-bg').get(0).play();
-  
-  setTimeout(function() { controlMusic() }, 1);
+  window.focus();
+  $("#sound-bg").get(0).play();
+
+  setTimeout(function () {
+    controlMusic();
+  }, 1);
 }
 
 $(document).ready(function () {
@@ -40,12 +42,12 @@ $(document).ready(function () {
   var level = localStorage.getItem("level");
   startGame(level);
   //볼륨 설정
-  bgVol=localStorage.getItem('bgVol');
-  effVol=localStorage.getItem('effVol');
+  bgVol = localStorage.getItem("bgVol");
+  effVol = localStorage.getItem("effVol");
   //음악 종류 설정
-  if(level==1) $("#sound-bg").attr("src","music/lv1_bgm.mp3");
-  else if(level==2) $("#sound-bg").attr("src","music/lv2_bgm.mp3");
-  else if(level==3) $("#sound-bg").attr("src","music/boss1.mp3");
+  if (level == 1) $("#sound-bg").attr("src", "music/lv1_bgm.mp3");
+  else if (level == 2) $("#sound-bg").attr("src", "music/lv2_bgm.mp3");
+  else if (level == 3) $("#sound-bg").attr("src", "music/boss1.mp3");
   controlSound();
   controlMusic();
   //이미지들 돌리기
@@ -345,7 +347,7 @@ class Paddle {
       ball.colx = ball.x;
       ball.coly = ball.y + ball.radius;
       ck = 1;
-      $('#sound-jump').get(0).play();
+      $("#sound-jump").get(0).play();
     }
   }
 
@@ -404,7 +406,7 @@ class Bricks {
       if (this.data[row][col].has_ring) {
         ring++;
         document.getElementById("ring_count").innerText = ring;
-        $("#sound-ring-get").get(0).play()
+        $("#sound-ring-get").get(0).play();
       } else if (this.data[row][col].has_supersonic) {
         supersonic++;
         document.getElementById("supersonic_count").innerText = supersonic;
@@ -659,7 +661,7 @@ class Game {
         ring--;
         document.getElementById("ring_count").innerText = ring;
         is_supersonic = false;
-        $("#sound-ring-fall").get(0).play()
+        $("#sound-ring-fall").get(0).play();
       } else {
         this.state = "lose";
       }
@@ -728,7 +730,8 @@ function resultScreen_nextStage() {
     timeCnt++;
     if (timeCnt == 3) {
       clearInterval(req);
-      startGame(Number(g_level) + 1);
+      location.href =
+        "../메뉴/프로젝트/item_ex/explain" + (Number(g_level) + 1) + ".html";
     }
   }, 1000);
 }
@@ -764,6 +767,12 @@ function resultScreen_end() {
   ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
   ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
   ctx.closePath();
+
+  if (game.state == "lose") {
+    $("#sound-bg").attr("src", "music/gameOver_bgm.mp3");
+    $("#sound-bg").attr("loop", "True");
+    $("#sound-bg").get(0).play();
+  }
 }
 //멈춤 화면 캔버스 그리기
 function resultScreen_pause() {
