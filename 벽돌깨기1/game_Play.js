@@ -97,15 +97,14 @@ function startGame(level) {
     brickData = mkBricks(g_level);
   }
   //레벨에 따라 아이템창 변경
-  if(g_level==1){
-    $("#supersonic").css('display','none');
-    $("#clock").css('display','none');
-    $("#knuckles").css('display','none');
-    $("#items").css('width','120px');
-  }
-  else if(g_level==2){
-    $("#knuckles").css('display','none');
-    $("#items").css('width','350px');
+  if (g_level == 1) {
+    $("#supersonic").css("display", "none");
+    $("#clock").css("display", "none");
+    $("#knuckles").css("display", "none");
+    $("#items").css("width", "120px");
+  } else if (g_level == 2) {
+    $("#knuckles").css("display", "none");
+    $("#items").css("width", "350px");
   }
   game = new Game(g_level);
   mainLoop();
@@ -449,7 +448,7 @@ class Bricks {
       //블럭 없애기
       this.data[row][col] = 0;
       this.count--;
-      score++; //블럭당 점수 1점( 수정 가능 )
+      score += 1 * g_level; //블럭당 점수 1점 * 레벨( 수정 가능 )
       $("#sound-brick-collide").get(0).play();
       return true;
     } else return false;
@@ -608,7 +607,8 @@ document.addEventListener("keydown", (e) => {
     //Retry
     $("#click-sound").get(0).play();
     score = 0; //점수 초기화
-    if(g_level<3) $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
+    if (g_level < 3)
+      $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
     else $("#sound-bg").attr("src", "music/boss1.mp3");
     controlMusic();
     startGame(g_level);
