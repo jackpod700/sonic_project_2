@@ -615,6 +615,9 @@ class Game {
       if (this.timeCount >= 100) this.state = "play";
       return;
     }
+    //삭제 해ㅐ애ㅐ애
+    if (this.level == 2 && this.state == "go2Lv3") this.state = "clear"; //임시!!!!!!!!!!(보스전 만들면 삭제 필)
+    //삭제 해ㅐ애애ㅐㅇ
     if (this.state != "play") return;
 
     this.paddle.x = mouseX - PADDLE_WIDTH / 2;
@@ -749,6 +752,9 @@ function resultScreen_end() {
   if (myReq) cancelAnimationFrame(myReq);
   if (game.state == "lose") {
     $("#sound-bg").attr("src", "music/gameOver_bgm.mp3");
+    $("#sound-bg").get(0).play();
+  } else if (game.state == "clear") {
+    $("#sound-bg").attr("src", "music/gameClear_bgm.mp3");
     $("#sound-bg").get(0).play();
   }
   ctx.beginPath();
