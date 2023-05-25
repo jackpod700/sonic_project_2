@@ -23,10 +23,10 @@ var effVol;//이펙트볼륨
 //사운드 설정
 function controlSound() {
   $("#sound-bg").prop("volume", bgVol);
-  $("#soundsound-ring-get").prop("volume", effVol);
+  $("#sound-ring-get").prop("volume", effVol);
   $("#sound-ring-fall").prop("volume", effVol);
   $("#sound-jump").prop("volume", effVol);
-
+  $("#sound-supersonic").prop("volume",effVol);
 }
 
 function controlMusic() {
@@ -495,6 +495,7 @@ document.addEventListener("keydown", (e) => {
   if (key == "1") {
     //슈퍼소닉 사용
     if (supersonic > 0) {
+      $("#sound-supersonic").get(0).play();
       is_supersonic = true;
       supersonic--;
       document.getElementById("supersonic_count").innerText = supersonic;
