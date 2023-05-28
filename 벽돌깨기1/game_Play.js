@@ -80,8 +80,6 @@ function mkBricks(level) {
   }
 }
 
-var ck = 1;
-
 //공
 class Ball {
   constructor(x, y, radius, speed, angle) {
@@ -93,6 +91,7 @@ class Ball {
     this.angle=angle;
     this.count=0;
     this.is_sonic=true;
+
     this.colx;
     this.coly;
   }
@@ -100,6 +99,14 @@ class Ball {
     var radian = (angle / 180) * Math.PI;
     this.mx = this.speed * Math.cos(radian);
     this.my = -this.speed * Math.sin(radian);
+  }
+
+  setcircleCollide(radian){
+    var x = -this.mx;
+    var y  = -this.my;
+
+    this.mx = x * Math.cos(radian) + y * Math.sin(radian);
+    this.my= -1 * x * Math.sin(radian) + y * Math.cos(radian);
   }
 
   move(k) {
@@ -119,28 +126,22 @@ class Ball {
 
   collideWall(left, top, right) {
     if (this.mx < 0 && this.collideX < left){
-      if(ck ==0){
-        ck =1;
-      }
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      ck = 1;
     }
     if (this.mx > 0 && this.collideX > right){
-     if(ck ==0){
-        ck =1;
-     }
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      ck = 1;
     }
     if (this.my < 0 && this.collideY < top){
-     if(ck ==0){
-       ck =1;
-     }
       this.my *= -1;
       this.colx = this.x;
       this.coly = this.y;
+      ck = 1;
     }
   }
 
@@ -181,10 +182,11 @@ class Ball {
 }
 
 var eggman1Img = new Image();
-eggman1Img.src = "eggman1.gif";
+eggman1Img.src = "eggman1/eggman1-0.png";
 var bossx = WIDTH/2;
-var bossy = HEIGHT - 640;
+var bossy = HEIGHT - 645;
 var bossr = 40
+var ck = 1;
 
 class Eggman1{
   constructor(x, y, hp){
@@ -192,69 +194,84 @@ class Eggman1{
     this.y = y;
     this.hp = hp;
     this.bx = bossx;
-    this.by = bossy+185;
+    this.by = bossy+189;
+    this.byf = bossy+40;
+    this.bxf = bossx;
+    this.count = 0;
+    this.h = 0;
+    this.cek = 0;
+    this.a = 0;
+    this.v = 1.392015;
   }
 
   collide(ball) {
-    var check = () => (ball.x-bossx)**2+(ball.y-bossy)**2 < 3600;
-    if (check()) {
-      var temp;
+    var check = () => Math.sqrt((ball.x-bossx)**2+(ball.y-bossy)**2) < 60;
+    var x = 2 * ball.x - bossx;
+    var y = 2 * ball.y - bossy;
 
-      if(ck==1){
-        if((bossy-ball.y)/(bossx-ball.x)>0){
-          if((bossy-ball.y)/(bossx-ball.x)>1){
-            temp = ball.mx;
-            ball.mx = -ball.my;
-            ball.my = -temp;
-          } else if((bossy-ball.y)/(bossx-ball.x)<1){
-            temp = ball.mx;
-            ball.mx = ball.my;
-            ball.my = -temp;
-          } 
-        }else if((bossy-ball.y)/(bossx-ball.x)< 0){
-          if((bossy-ball.y)/(bossx-ball.x)> -1){
-            temp = ball.mx;
-            ball.mx = -ball.my;
-            ball.my = temp;
-          } else if((bossy-ball.y)/(bossx-ball.x)<-1){
-            temp = ball.mx;
-            ball.mx = -ball.my;
-            
-          }
-        }
-
-        ck = 0;
-      }
+    if (check() > 0 && ck != 0){
+      var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
+      ball.setcircleCollide(2 * radian);
+      ck = 0;
+      this.hp--;
     }
   }
 
   collideb(ball){
-    var check = () => (ball.x-bossx)**2+(ball.y-(bossy+180))**2 < 3025;
-    if (check()) {
-      if(ck==1){
-        var radian = Math.atan(((bossy+180)-ball.y)/(bossx-ball.x))-Math.atan((ball.coly-ball.y)/(ball.colx-ball.x));
-        var angle = radian * 180 / Math.PI;
-        ck = 0;
-      }
+    var check = () => Math.sqrt((ball.x-this.bx)**2+(ball.y-(this.by))**2) < 44;
+
+
+    var x = 2 * ball.x - this.bx;
+    var y = 2 * ball.y - this.by;
+
+    if (check() > 0 && ck != 2){
+      var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
+      ball.setcircleCollide(2 * radian);
+      ck = 2;
     }
   }
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.arc(bossx, bossy, 40, 0, 2*Math.PI, false);
-    ctx.fillStyle="black";
-    ctx.arc(this.bx, this.by, 35, 0, 2*Math.PI, false);
-    ctx.fillStyle="black";
+    eggman1Img.src="eggman1/eggman1-"+this.count+".png";
+    if(this.count==279) this.count = -1;
+    if(this.count==67) this.count = 85;
+    if(this.count==211) this.count = 224;
+    if(this.count==56) this.count = 58;
+    if(this.count==274) this.count = 275;
+
+    else this.count++;
+    this.by = this.byf + 149 * Math.cos(this.h*Math.PI/180);
+    this.bx = this.bxf + 140 * Math.sin(this.h*Math.PI/180);
+    ctx.arc(this.bx, this.by, 32, 0, 2*Math.PI, false);
+    ctx.fillStyle="white";
     ctx.fill();
+    this.a += Math.PI/3;
+    if(this.cek == 0){
+      this.h = this.h + Math.PI/2 *this.v* Math.cos(this.v*this.a*Math.PI/180);
+      if(this.h > 90){
+        this.cek = 1;
+      }
+    } else {
+      this.h = this.h - Math.PI/2 *this.v * Math.cos(this.v*this.a*Math.PI/180);;
+      if(this.h < -90){
+        this.cek = 0;
+      }
+    }
+
     ctx.drawImage(
       eggman1Img,
       this.x,
       this.y,
-      350,
+      360,
       300
     );
     ctx.closePath();
   }
+}
+
+class Eggman2{
+
 }
 
 //패들
@@ -455,7 +472,7 @@ class Game {
   constructor(level) {
     
     var brickSettings = [brickData, 0, 50, WIDTH, 150];
-    var boss = [(WIDTH - 350)/2, HEIGHT-700, 3];
+    var boss = [(WIDTH - 360)/2, HEIGHT-700, 3];
     
     this.level=level;
 
@@ -474,7 +491,7 @@ class Game {
       PADDLE_Y - BALL_RADIUS,
       BALL_RADIUS,
       ballSpeeds[level - 1],
-      80
+      50
     );
     if (level != 3){
      this.bricks = new Bricks(...brickSettings);
@@ -495,7 +512,7 @@ class Game {
     this.paddle.x = mouseX - PADDLE_WIDTH / 2;
 
     //공의 벽이나 패들과의 충돌 여부 확인(for문 -> 정확도 높임)
-    const DIV = 10;
+    const DIV = 100;
     for (var i = 0; i < DIV; i++) {
       this.ball[0].move(1 / DIV);
       this.ball[0].collideWall(0, 0, WIDTH);
