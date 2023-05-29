@@ -401,12 +401,12 @@ class Eggman1 {
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ck = 2;
-      if (ring > 0) {
+      if (ring > 0&&ball.is_sonic==true) {
         //this.paddle.x=PADDLE_X;
         ring--;
         document.getElementById("ring_count").innerText = ring;
         $("#sound-ring-fall").get(0).play();
-      } else {
+      } else if(ring<=0&&ball.is_sonic==true) {
         game.state = "lose";
       }
     }
@@ -1169,10 +1169,11 @@ function resultScreen_nextStage() {
   ctx.textBaseline = "middle";
   var str = "Go stage" + (Number(g_level) + 1);
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.45);
-
   ctx.fillStyle = "#17569b";
   ctx.font = "20px sonic";
   ctx.textBaseline = "middle";
+  //링 개수*10만큼 점수 더함
+  score+=ring*5;
   var str = "current score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.55);
   ctx.closePath();
@@ -1202,6 +1203,9 @@ function resultScreen_end() {
     $("#sound-bg").attr("src", "music/gameClear_bgm.mp3");
     $("#sound-bg").get(0).play();
   }
+
+  //링 개수*10만큼 점수 더함
+  score+=ring*10;
   ctx.beginPath();
   ctx.fillStyle = "#ff8831";
   ctx.font = "40px sonic";
