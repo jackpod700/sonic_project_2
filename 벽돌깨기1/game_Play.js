@@ -153,7 +153,6 @@ mob2.src = "mob2.png";
 var mob3 = new Image();
 mob3.src = "mob3.png";
 
-
 //브릭데이터 생성
 function mkBricks(level) {
   if (level == 1) {
@@ -163,9 +162,8 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c % 2) line[c] = new Brick(lv1Img, 2);
         //아이템 랜덤 생성시 브릭을 매번 생성해줘야됨
-        else line[c] = new Brick(lv1Img, 1);
+        line[c] = new Brick(lv1Img, 1);
       }
       data.push(line);
     }
@@ -179,13 +177,13 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        num = Math.floor(Math.random()*(9));
-        if (num % 9 >0) line[c] = new Brick(lv2Img, 2);
+        num = Math.floor(Math.random() * 9);
+        if (num % 9 > 0) line[c] = new Brick(lv2Img, 2);
         else {
-          line[c] = Math.floor(Math.random()*3)+2;
+          line[c] = Math.floor(Math.random() * 3) + 2;
           mobcount++;
         }
-       }
+      }
       data.push(line);
     }
     return data;
@@ -197,11 +195,10 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c == 0 || c ==7) line[c] = new Brick(lv3Img, 2);
-        else if(c == 1 || c==6){
-          if(r >4 || r < 2) line[c] = new Brick(lv3Img, 2);
-        }
-        else if(r == 7) line[c] = new Brick(lv3Img, 2);
+        if (c == 0 || c == 7) line[c] = new Brick(lv3Img, 3);
+        else if (c == 1 || c == 6) {
+          if (r > 4 || r < 2) line[c] = new Brick(lv3Img, 3);
+        } else if (r == 7) line[c] = new Brick(lv3Img, 3);
       }
       data.push(line);
     }
@@ -214,8 +211,9 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c == 0 || c ==7) line[c] = new Brick(lv3Img, 2);
-        else if(r == 3||r == 4 || r ==5 || r==6) line[c] = new Brick(lv3Img, 2);
+        if (c == 0 || c == 7) line[c] = new Brick(lv3Img, 3);
+        else if (r == 3 || r == 4 || r == 5 || r == 6)
+          line[c] = new Brick(lv3Img, 3);
       }
       data.push(line);
     }
@@ -228,8 +226,10 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c == 0 || c ==7 || c ==1|| c==2||c==6||c==5) line[c] = new Brick(lv3Img, 2);
-        else if(r == 3||r == 4 || r ==5 || r==6) line[c] = new Brick(lv3Img, 2);
+        if (c == 0 || c == 7 || c == 1 || c == 2 || c == 6 || c == 5)
+          line[c] = new Brick(lv3Img, 3);
+        else if (r == 3 || r == 4 || r == 5 || r == 6)
+          line[c] = new Brick(lv3Img, 3);
       }
       data.push(line);
     }
@@ -270,12 +270,12 @@ class Ball {
     this.my = -this.speed * Math.sin(radian);
   }
 
-  setcircleCollide(radian){
+  setcircleCollide(radian) {
     var x = -this.mx;
-    var y  = -this.my;
+    var y = -this.my;
 
     this.mx = x * Math.cos(radian) + y * Math.sin(radian);
-    this.my= -1 * x * Math.sin(radian) + y * Math.cos(radian);
+    this.my = -1 * x * Math.sin(radian) + y * Math.cos(radian);
   }
 
   move(k) {
@@ -294,21 +294,21 @@ class Ball {
   }
 
   collideWall(left, top, right) {
-    if (this.mx < 0 && this.collideX < left){
+    if (this.mx < 0 && this.collideX < left) {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
       ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
-    if (this.mx > 0 && this.collideX > right){
+    if (this.mx > 0 && this.collideX > right) {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
       ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
-    if (this.my < 0 && this.collideY < top){
+    if (this.my < 0 && this.collideY < top) {
       this.my *= -1;
       this.colx = this.x;
       this.coly = this.y;
@@ -349,9 +349,9 @@ class Ball {
 
 var eggman1Img = new Image();
 eggman1Img.src = "eggman1/eggman1-0.png";
-var bossx = WIDTH/2;
+var bossx = WIDTH / 2;
 var bossy = HEIGHT - 645;
-var bossr = 40
+var bossr = 40;
 var ck = 1;
 
 class Eggman1 {
@@ -360,8 +360,8 @@ class Eggman1 {
     this.y = y;
     this.hp = hp;
     this.bx = bossx;
-    this.by = bossy+189;
-    this.byf = bossy+40;
+    this.by = bossy + 189;
+    this.byf = bossy + 40;
     this.bxf = bossx;
     this.count = 0;
     this.h = 0;
@@ -371,29 +371,46 @@ class Eggman1 {
   }
 
   collide(ball) {
-    var check = () => Math.sqrt((ball.x-bossx)**2+(ball.y-bossy)**2) < 60;
+    var check = () =>
+      Math.sqrt((ball.x - bossx) ** 2 + (ball.y - bossy) ** 2) < 60;
     var x = 2 * ball.x - bossx;
     var y = 2 * ball.y - bossy;
 
-    if (check() > 0 && ck != 0){
-      var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
+    if (check() > 0 && ck != 0) {
+      var radian =
+        Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
+        Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ck = 0;
       this.hp--;
     }
   }
 
-  collideb(ball){
-    var check = () => Math.sqrt((ball.x-this.bx)**2+(ball.y-(this.by))**2) < 44;
-
+  collideb(ball) {
+    var check = () =>
+      Math.sqrt((ball.x - this.bx) ** 2 + (ball.y - this.by) ** 2) < 44;
 
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
-    if (check() > 0 && ck != 2){
-      var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
+    if (check() > 0 && ck != 2) {
+      var radian =
+        Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
+        Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ck = 2;
+      if (ring > 0) {
+        //this.paddle.x=PADDLE_X;
+        game.ball[0].x = game.paddle.center;
+        game.ball[0].y = PADDLE_Y - BALL_RADIUS;
+        game.ball[0].setAngle(80);
+        ring--;
+        document.getElementById("ring_count").innerText = ring;
+        is_supersonic = false;
+        $("#sound-ring-fall").get(0).play();
+      } else {
+        game.state = "lose";
+      }
     }
   }
 
@@ -412,17 +429,21 @@ class Eggman1 {
     if(this.count==210) this.count = 224;
     if(this.count==56) this.count = 58;
     else this.count++;
-    this.by = this.byf + 149 * Math.cos(this.h*Math.PI/180);
-    this.bx = this.bxf + 140 * Math.sin(this.h*Math.PI/180);
-    this.a += Math.PI/3;
-    if(this.cek == 0){
-      this.h = this.h + Math.PI/2 *this.v* Math.cos(this.v*this.a*Math.PI/180);
-      if(this.h > 90){
+    this.by = this.byf + 149 * Math.cos((this.h * Math.PI) / 180);
+    this.bx = this.bxf + 140 * Math.sin((this.h * Math.PI) / 180);
+    this.a += Math.PI / 3;
+    if (this.cek == 0) {
+      this.h =
+        this.h +
+        (Math.PI / 2) * this.v * Math.cos((this.v * this.a * Math.PI) / 180);
+      if (this.h > 90) {
         this.cek = 1;
       }
     } else {
-      this.h = this.h - Math.PI/2 *this.v * Math.cos(this.v*this.a*Math.PI/180);;
-      if(this.h < -90){
+      this.h =
+        this.h -
+        (Math.PI / 2) * this.v * Math.cos((this.v * this.a * Math.PI) / 180);
+      if (this.h < -90) {
         this.cek = 0;
       }
     }
@@ -432,8 +453,8 @@ class Eggman1 {
 var eggman2Img = new Image();
 eggman2Img.src = "eggman2/eggman2-0.png";
 
-class Eggman2{
-  constructor(x, y, hp){
+class Eggman2 {
+  constructor(x, y, hp) {
     this.x = x;
     this.y = y;
     this.hp = hp;
@@ -446,12 +467,15 @@ class Eggman2{
   }
 
   collide(ball) {
-    var check = () => Math.sqrt((ball.x-this.bx)**2+(ball.y-this.by)**2) < 60;
+    var check = () =>
+      Math.sqrt((ball.x - this.bx) ** 2 + (ball.y - this.by) ** 2) < 60;
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
-    if (check() > 0 && ck != 0){
-      var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
+    if (check() > 0 && ck != 0) {
+      var radian =
+        Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
+        Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ck = 0;
       this.hp--;
@@ -471,33 +495,33 @@ class Eggman2{
     if(this.ct<0){
       if(this.count==11) this.count = 6;
       else {
-        if(this.dcount <6){
+        if (this.dcount < 6) {
           this.dcount++;
-        }else{
+        } else {
           this.count++;
           this.dcount = 0;
         }
       }
-    }else{
-      if(this.count==5) this.count = 0;
+    } else {
+      if (this.count == 5) this.count = 0;
       else {
-        if(this.dcount <6){
+        if (this.dcount < 6) {
           this.dcount++;
-        }else{
+        } else {
           this.count++;
           this.dcount = 0;
         }
       }
     }
-    this.bx+=this.ct;
-    this.x+=this.ct;
-    if(Math.abs(bossx-this.bx)>150){
-      this.ct *=-1;
-      if(this.ct <0){
+    this.bx += this.ct;
+    this.x += this.ct;
+    if (Math.abs(bossx - this.bx) > 150) {
+      this.ct *= -1;
+      if (this.ct < 0) {
         this.count = 6;
         this.x += this.fix;
-      }else {
-        this.count =0;
+      } else {
+        this.count = 0;
         this.x -= this.fix;
       }
     }
@@ -508,65 +532,62 @@ class Eggman2{
 var eggman3Img = new Image();
 eggman3Img.src = "eggman3/eggman3-0.png";
 
-class Eggman3{
-  constructor(x, y, hp){
+class Eggman3 {
+  constructor(x, y, hp) {
     this.x = x;
     this.y = y;
     this.hp = hp;
     this.count = 0;
     this.dcount = 0;
-    this.mct=0;
+    this.mct = 0;
   }
 
   collide(ball) {
-    var check = () => Math.sqrt((ball.x-bossx)**2+(ball.y-bossy)**2) < 50;
+    var check = () =>
+      Math.sqrt((ball.x - bossx) ** 2 + (ball.y - bossy) ** 2) < 50;
     var x = 2 * ball.x - bossx;
     var y = 2 * ball.y - bossy;
 
-    if (check() > 0 && ck != 0){
-      var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
+    if (check() > 0 && ck != 0) {
+      var radian =
+        Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
+        Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ck = 0;
       this.hp--;
     }
   }
 
-  create(bricks){
-    if(this.mct==2500){
-      for(var j = 0; j < 7 ; j++){
-        for(var k =0 ; k<8; k++){
-          if(bricks.data[j][k] ==0){
-            var num = Math.floor(Math.random()*15);
-            if(num%15<2){
-              bricks.data[j][k]=Math.floor(Math.random()*3)+2;
+  create(bricks) {
+    if (this.mct == 2500) {
+      for (var j = 0; j < 7; j++) {
+        for (var k = 0; k < 8; k++) {
+          if (bricks.data[j][k] == 0) {
+            var num = Math.floor(Math.random() * 15);
+            if (num % 15 < 2) {
+              bricks.data[j][k] = Math.floor(Math.random() * 3) + 2;
             }
           }
         }
-      } 
-      this.mct = 0;  
+      }
+      this.mct = 0;
     }
     this.mct++;
   }
 
   draw(ctx) {
     ctx.beginPath();
-    eggman3Img.src="eggman3/eggman3-"+this.count+".png";
-    if(this.count==5) this.count = 0;
+    eggman3Img.src = "eggman3/eggman3-" + this.count + ".png";
+    if (this.count == 5) this.count = 0;
     else {
-      if(this.dcount <6){
+      if (this.dcount < 6) {
         this.dcount++;
-       }else{
+      } else {
         this.count++;
-         this.dcount = 0;
+        this.dcount = 0;
       }
     }
-    ctx.drawImage(
-      eggman3Img,
-      this.x,
-      this.y,
-      140,
-      130
-    );
+    ctx.drawImage(eggman3Img, this.x, this.y, 140, 130);
     ctx.closePath();
   }
 }
@@ -616,16 +637,24 @@ class Paddle {
 
 //브릭
 class Brick {
-  constructor(img, hp) {
+  constructor(img, level) {
     this.img = img;
-    this.hp = hp;
     //아이템들 추가
-    this.has_ring = Math.random() > 0.7;
-    if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic)
-      this.has_clock = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic && !this.has_clock)
-      this.has_Knuckles = Math.random() > 0.95;
+    if (level == 1) {
+      this.has_ring = Math.random() > 0.8;
+    } else if (level == 2) {
+      this.has_ring = Math.random() > 0.8;
+      if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
+      if (!this.has_ring && !this.has_supersonic)
+        this.has_clock = Math.random() > 0.9;
+    } else {
+      this.has_ring = Math.random() > 0.7;
+      if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
+      if (!this.has_ring && !this.has_supersonic)
+        this.has_clock = Math.random() > 0.9;
+      if (!this.has_ring && !this.has_supersonic && !this.has_clock)
+        this.has_Knuckles = Math.random() > 0.95;
+    }
   }
 }
 
@@ -688,31 +717,31 @@ class Bricks {
         var x_Brick = this.x + this.brickWidth * c;
         var y_Brick = this.y + this.brickHeight * r;
         ctx.beginPath();
-        if(this.data[r][c] ==2){
+        if (this.data[r][c] == 2) {
           ctx.drawImage(
             mob1,
-            this.x+this.brickWidth*c+10,
-            this.y+this.brickHeight*r+6,
+            this.x + this.brickWidth * c + 10,
+            this.y + this.brickHeight * r + 6,
             75,
             45
-          );   
-        }else if(this.data[r][c] ==3){
+          );
+        } else if (this.data[r][c] == 3) {
           ctx.drawImage(
             mob2,
-            this.x+this.brickWidth*c+10,
-            this.y+this.brickHeight*r+6,
+            this.x + this.brickWidth * c + 10,
+            this.y + this.brickHeight * r + 6,
             75,
             45
-          );   
-        }else if(this.data[r][c] ==4){
+          );
+        } else if (this.data[r][c] == 4) {
           ctx.drawImage(
             mob3,
-            this.x+this.brickWidth*c+10,
-            this.y+this.brickHeight*r+6,
+            this.x + this.brickWidth * c + 10,
+            this.y + this.brickHeight * r + 6,
             75,
             45
-          );   
-          } else{
+          );
+        } else {
           ctx.drawImage(
             this.data[r][c].img,
             x_Brick,
@@ -720,8 +749,8 @@ class Bricks {
             this.brickWidth,
             this.brickHeight
           );
-         }
-         ctx.closePath();
+        }
+        ctx.closePath();
         //블럭에 아이템이 들어있을 시 아이템 이미지 삽입
         if (this.data[r][c].has_ring) {
           ctx.drawImage(
@@ -786,7 +815,7 @@ document.addEventListener("keydown", (e) => {
       //슈퍼소닉 5초유지
       setTimeout(function () {
         is_supersonic = false;
-      }, 5000);
+      }, 3000);
     }
   }
   if (key == "2") {
@@ -813,6 +842,9 @@ document.addEventListener("keydown", (e) => {
         game.ball[0].my = game.ball[0].my * game.ball[0].speed;
 
         if (game.ball[1] != null) {
+          game.ball[1].mx = (game.ball[1].mx / game.ball[1].speed) * 1;
+          game.ball[1].my = (game.ball[1].my / game.ball[1].speed) * 1;
+          game.ball[1].speed = 1;
           game.ball[1].speed = ballSpeeds[game.level - 1];
           game.ball[1].mx = game.ball[1].mx * game.ball[1].speed;
           game.ball[1].my = game.ball[1].my * game.ball[1].speed;
@@ -860,6 +892,16 @@ document.addEventListener("keydown", (e) => {
     //Retry
     $("#click-sound").get(0).play();
     score = 0; //점수 초기화
+    //아이템 초기화
+    ring = 0;
+    supersonic = 0;
+    clock = 0;
+    Knuckles = 0;
+    is_supersonic = false;
+    document.getElementById("ring_count").innerText = ring;
+    document.getElementById("supersonic_count").innerText = supersonic;
+    document.getElementById("clock_count").innerText = clock;
+    document.getElementById("Knuckles_count").innerText = Knuckles;
     if (g_level < 3)
       $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
     else $("#sound-bg").attr("src", "music/boss1.mp3");
@@ -871,7 +913,7 @@ document.addEventListener("keydown", (e) => {
 class Game {
   constructor(level) {
     var brickSettings = [brickData, 0, 50, WIDTH, 150];
-    var boss = [(WIDTH - 360)/2, HEIGHT-700, 3];
+    var boss = [(WIDTH - 360) / 2, HEIGHT - 700, 3];
 
     this.level = level;
 
@@ -892,12 +934,11 @@ class Game {
       ballSpeeds[level - 1],
       90
     );
-    if (level == 1){
-     this.bricks = new Bricks(...brickSettings);
-    } else if(level == 2){
+    if (level == 1) {
+      this.bricks = new Bricks(...brickSettings);
+    } else if (level == 2) {
       this.bricks = new Bricks(brickData, 0, 50, WIDTH, 250);
-    }
-     else {
+    } else {
       this.boss = new Eggman1(...boss);
       this.bricks = new Bricks(brickData, 0, 50, WIDTH, 400);
     }
@@ -913,9 +954,6 @@ class Game {
       if (this.timeCount >= 100) this.state = "play";
       return;
     }
-    //삭제 해ㅐ애ㅐ애
-    if (this.level == 2 && this.state == "go2Lv3") this.state = "clear"; //임시!!!!!!!!!!(보스전 만들면 삭제 필)
-    //삭제 해ㅐ애애ㅐㅇ
     if (this.state != "play") return;
 
     this.paddle.x = mouseX - PADDLE_WIDTH / 2;
@@ -927,6 +965,7 @@ class Game {
       this.ball[0].collideWall(0, 0, WIDTH);
       this.paddle.collide(this.ball[0]);
       if (this.level != 3) {
+        //레벨 1,2
         if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)) {
           if (!is_supersonic) {
             this.ball[0].mx *= -1;
@@ -937,34 +976,41 @@ class Game {
             this.ball[0].my *= -1;
           }
         }
-      }else{
-        if(this.boss){
+      } else {
+        //보스전
+        if (this.boss) {
           this.boss.collide(this.ball[0]);
           this.boss.collideb(this.ball[0]);
+          if (this.ball[1] != null) {
+            this.boss.collide(this.ball[1]);
+            this.boss.collideb(this.ball[1]);
+          }
         }
-        if(this.boss2){
+        if (this.boss2) {
           this.boss2.collide(this.ball[0]);
+          if (this.ball[1] != null) this.boss2.collide(this.ball[1]);
         }
-        if(this.boss3){
+        if (this.boss3) {
           this.boss3.collide(this.ball[0]);
+          if (this.ball[1] != null) this.boss3.collide(this.ball[1]);
           this.boss3.create(this.bricks);
         }
-        if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)){
-           if(!is_supersonic){
+        if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)) {
+          if (!is_supersonic) {
             this.ball[0].mx *= -1;
             this.ball[0].colx = this.ball[0].x;
             this.ball[0].coly = this.ball[0].y;
             ck = 1;
           }
-         } 
-         if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY)){
-           if(!is_supersonic){
+        }
+        if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY)) {
+          if (!is_supersonic) {
             this.ball[0].my *= -1;
             this.ball[0].colx = this.ball[0].x;
             this.ball[0].coly = this.ball[0].y;
             ck = 1;
-           }
-         }
+          }
+        }
       }
       //너클즈가 존재한다면
       if (this.ball[1] != null) {
@@ -1006,52 +1052,53 @@ class Game {
       if (this.bricks.count == 0) {
         if (this.level == 1) game.state = "go2Lv2";
         else if (this.level == 2) game.state = "go2Lv3";
-        else game.state = "clear";
       }
     }
 
-  if(!this.boss){
-    if(this.phase == 1){
-     this.boss2 = new Eggman2((WIDTH -142)/2-28, HEIGHT-702, 3);
-     this.phase = 2;
-     this.bricks = new Bricks(mkBricks(4), 0, 50, WIDTH, 400);
-     this.ball[0] = new Ball(
-      this.paddle.center,
-      PADDLE_Y - BALL_RADIUS,
-      BALL_RADIUS,
-      ballSpeeds[2],
-      90
-      );
-     this.paddle = new Paddle(
-      PADDLE_X,
-      PADDLE_Y,
-      PADDLE_WIDTH,
-      PADDLE_HEIGHT,
-      COLOR
-      );
+    if (!this.boss) {
+      if (this.phase == 1) {
+        this.boss2 = new Eggman2((WIDTH - 142) / 2 - 28, HEIGHT - 702, 3);
+        this.phase = 2;
+        this.bricks = new Bricks(mkBricks(4), 0, 50, WIDTH, 400);
+        this.ball[0] = new Ball(
+          this.paddle.center,
+          PADDLE_Y - BALL_RADIUS,
+          BALL_RADIUS,
+          ballSpeeds[2],
+          90
+        );
+        this.paddle = new Paddle(
+          PADDLE_X,
+          PADDLE_Y,
+          PADDLE_WIDTH,
+          PADDLE_HEIGHT,
+          COLOR
+        );
+        game.ball[1] = null;
+      }
     }
-  }
-  if(!this.boss2){
-    if(this.phase == 2){
-     this.phase = 3;
-     this.bricks = new Bricks(mkBricks(5), 0, 50, WIDTH, 400);
-     this.boss3 = new Eggman3((WIDTH -140)/2, HEIGHT-710, 5);
-     this.ball[0] = new Ball(
-      this.paddle.center,
-      PADDLE_Y - BALL_RADIUS,
-      BALL_RADIUS,
-      ballSpeeds[2],
-      90
-      );
-     this.paddle = new Paddle(
-      PADDLE_X,
-      PADDLE_Y,
-      PADDLE_WIDTH,
-      PADDLE_HEIGHT,
-      COLOR
-      );
+    if (!this.boss2) {
+      if (this.phase == 2) {
+        this.phase = 3;
+        this.bricks = new Bricks(mkBricks(5), 0, 50, WIDTH, 400);
+        this.boss3 = new Eggman3((WIDTH - 140) / 2, HEIGHT - 710, 5);
+        this.ball[0] = new Ball(
+          this.paddle.center,
+          PADDLE_Y - BALL_RADIUS,
+          BALL_RADIUS,
+          ballSpeeds[2],
+          90
+        );
+        this.paddle = new Paddle(
+          PADDLE_X,
+          PADDLE_Y,
+          PADDLE_WIDTH,
+          PADDLE_HEIGHT,
+          COLOR
+        );
+        game.ball[1] = null;
+      }
     }
-  }
   }
 
   draw() {
@@ -1065,25 +1112,26 @@ class Game {
     if (this.level != 3) {
       this.bricks.draw(ctx);
     } else {
-      if(this.boss){
+      if (this.boss) {
         this.boss.draw(ctx);
         this.bricks.draw(ctx);
-        if(this.boss.hp==0){
+        if (this.boss.hp == 0) {
           delete this.boss;
           this.phase = 1;
         }
       }
-      if(this.boss2){
+      if (this.boss2) {
         this.boss2.draw(ctx);
         this.bricks.draw(ctx);
-        if(this.boss2.hp == 0){
+        if (this.boss2.hp == 0) {
           delete this.boss2;
         }
       }
-      if(this.boss3){
+      if (this.boss3) {
         this.boss3.draw(ctx);
         this.bricks.draw(ctx);
-        if(this.boss3.hp == 0){
+        if (this.boss3.hp == 0) {
+          game.state = "clear";
           delete this.boss3;
         }
       }
@@ -1096,8 +1144,9 @@ class Game {
 function resultScreen(result) {
   ctx.beginPath();
   ctx.fillStyle = "black";
-  ctx.fillRect(80, 110, 550, 550);
   ctx.globalAlpha = 0.7;
+  ctx.fillRect(80, 110, 550, 550);
+  ctx.globalAlpha = 1;
   ctx.closePath();
   if (result == "nextStage") resultScreen_nextStage();
   if (result == "END") resultScreen_end();
