@@ -401,12 +401,8 @@ class Eggman1 {
       ck = 2;
       if (ring > 0) {
         //this.paddle.x=PADDLE_X;
-        game.ball[0].x = game.paddle.center;
-        game.ball[0].y = PADDLE_Y - BALL_RADIUS;
-        game.ball[0].setAngle(80);
         ring--;
         document.getElementById("ring_count").innerText = ring;
-        is_supersonic = false;
         $("#sound-ring-fall").get(0).play();
       } else {
         game.state = "lose";
