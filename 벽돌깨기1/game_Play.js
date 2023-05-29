@@ -237,8 +237,6 @@ function mkBricks(level) {
   }
 }
 
-var ck = 1;
-
 //배경 설정
 function setBackground(level) {
   var back = document.getElementById("back-ground");
@@ -401,6 +399,13 @@ class Eggman1 {
 
   draw(ctx) {
     ctx.beginPath();
+    ctx.drawImage(
+      eggman1Img,
+      this.x,
+      this.y,
+      360,
+      300
+    );
     eggman1Img.src="eggman1/eggman1-"+this.count+".png";
     if(this.count==279) this.count = -1;
     if(this.count==67) this.count = 85;
@@ -421,14 +426,6 @@ class Eggman1 {
         this.cek = 0;
       }
     }
-
-    ctx.drawImage(
-      eggman1Img,
-      this.x,
-      this.y,
-      360,
-      300
-    );
     ctx.closePath();
   }
 }
@@ -464,6 +461,13 @@ class Eggman2{
   draw(ctx) {
     ctx.beginPath();
     eggman2Img.src="eggman2/eggman2-"+this.count+".png";
+    ctx.drawImage(
+      eggman2Img,
+      this.x,
+      this.y,
+      142,
+      97
+    );
     if(this.ct<0){
       if(this.count==11) this.count = 6;
       else {
@@ -497,13 +501,6 @@ class Eggman2{
         this.x -= this.fix;
       }
     }
-    ctx.drawImage(
-      eggman2Img,
-      this.x,
-      this.y,
-      142,
-      97
-    );
     ctx.closePath();
   }
 }
