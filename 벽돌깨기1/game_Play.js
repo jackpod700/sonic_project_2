@@ -34,6 +34,7 @@ function controlSound() {
   $("#sound-knucles").prop("volume", effVol);
   $("#sound-wall-collide").prop("volume", effVol);
   $("#sound-brick-collide").prop("volume", effVol);
+  $("#eggman-collide").prop("volume", effVol);
 }
 
 function controlMusic() {
@@ -383,6 +384,7 @@ class Eggman1 {
       ball.setcircleCollide(2 * radian);
       ck = 0;
       this.hp--;
+      $("#eggman-collide").get(0).play();
     }
   }
 
@@ -475,6 +477,7 @@ class Eggman2 {
       ball.setcircleCollide(2 * radian);
       ck = 0;
       this.hp--;
+      $("#eggman-collide").get(0).play();
     }
   }
 
@@ -551,6 +554,7 @@ class Eggman3 {
       ball.setcircleCollide(2 * radian);
       ck = 0;
       this.hp--;
+      $("#eggman-collide").get(0).play();
     }
   }
 
