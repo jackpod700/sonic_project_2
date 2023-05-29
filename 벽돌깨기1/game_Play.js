@@ -697,6 +697,9 @@ class Bricks {
         Knuckles++;
         document.getElementById("Knuckles_count").innerText = Knuckles;
       }
+      if(this.data[row][col] == 2||this.data[row][col] == 3||this.data[row][col] == 4){
+        mobcount--;
+      }
       //블럭 없애기
       this.data[row][col] = 0;
       this.count--;
@@ -1045,10 +1048,14 @@ class Game {
       }
     }
     if (this.level != 3) {
-      if (this.bricks.count == 0) {
-        if (this.level == 1) game.state = "go2Lv2";
-        else if (this.level == 2) game.state = "go2Lv3";
-      }
+        if (this.level == 1){
+          if (this.bricks.count == 0) {
+             game.state = "go2Lv2";
+          }
+         }
+        if (this.level == 2){
+          if (mobcount == 0) game.state = "go2Lv3";
+        } 
     }
 
     if (!this.boss) {
