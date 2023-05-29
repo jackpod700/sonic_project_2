@@ -164,9 +164,8 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c % 2) line[c] = new Brick(lv1Img, 2);
         //아이템 랜덤 생성시 브릭을 매번 생성해줘야됨
-        else line[c] = new Brick(lv1Img, 1);
+        line[c] = new Brick(lv1Img, 1);
       }
       data.push(line);
     }
@@ -198,11 +197,11 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c == 0 || c ==7) line[c] = new Brick(lv3Img, 2);
+        if (c == 0 || c ==7) line[c] = new Brick(lv3Img, 3);
         else if(c == 1 || c==6){
-          if(r >4 || r < 2) line[c] = new Brick(lv3Img, 2);
+          if(r >4 || r < 2) line[c] = new Brick(lv3Img, 3);
         }
-        else if(r == 7) line[c] = new Brick(lv3Img, 2);
+        else if(r == 7) line[c] = new Brick(lv3Img, 3);
       }
       data.push(line);
     }
@@ -215,8 +214,8 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c == 0 || c ==7) line[c] = new Brick(lv3Img, 2);
-        else if(r == 3||r == 4 || r ==5 || r==6) line[c] = new Brick(lv3Img, 2);
+        if (c == 0 || c ==7) line[c] = new Brick(lv3Img, 3);
+        else if(r == 3||r == 4 || r ==5 || r==6) line[c] = new Brick(lv3Img, 3);
       }
       data.push(line);
     }
@@ -229,8 +228,8 @@ function mkBricks(level) {
     for (var r = 0; r < row; r++) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
-        if (c == 0 || c ==7 || c ==1|| c==2||c==6||c==5) line[c] = new Brick(lv3Img, 2);
-        else if(r == 3||r == 4 || r ==5 || r==6) line[c] = new Brick(lv3Img, 2);
+        if (c == 0 || c ==7 || c ==1|| c==2||c==6||c==5) line[c] = new Brick(lv3Img, 3);
+        else if(r == 3||r == 4 || r ==5 || r==6) line[c] = new Brick(lv3Img, 3);
       }
       data.push(line);
     }
@@ -388,8 +387,6 @@ class Eggman1 {
 
   collideb(ball){
     var check = () => Math.sqrt((ball.x-this.bx)**2+(ball.y-(this.by))**2) < 44;
-
-
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
@@ -397,15 +394,27 @@ class Eggman1 {
       var radian =  Math.atan((ball.coly - ball.y)/(ball.colx - ball.x)) -  Math.atan((y-ball.y)/(x-ball.x));
       ball.setcircleCollide(2 * radian);
       ck = 2;
+      if (ring > 0) {
+        //this.paddle.x=PADDLE_X;
+        game.ball[0].x = game.paddle.center;
+        game.ball[0].y = PADDLE_Y - BALL_RADIUS;
+        game.ball[0].setAngle(80);
+        ring--;
+        document.getElementById("ring_count").innerText = ring;
+        is_supersonic = false;
+        $("#sound-ring-fall").get(0).play();
+      } else {
+        game.state = "lose";
+      }
     }
   }
 
   draw(ctx) {
     ctx.beginPath();
     eggman1Img.src="eggman1/eggman1-"+this.count+".png";
-    if(this.count==279) this.count = -1;
+    if(this.count==279) this.count = 0;
     if(this.count==67) this.count = 85;
-    if(this.count==210) this.count = 224;
+    if(this.count==211) this.count = 225;
     if(this.count==56) this.count = 58;
     else this.count++;
     this.by = this.byf + 149 * Math.cos(this.h*Math.PI/180);
@@ -620,16 +629,26 @@ class Paddle {
 
 //브릭
 class Brick {
-  constructor(img, hp) {
+  constructor(img, level) {
     this.img = img;
-    this.hp = hp;
     //아이템들 추가
-    this.has_ring = Math.random() > 0.7;
-    if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic)
-      this.has_clock = Math.random() > 0.9;
-    if (!this.has_ring && !this.has_supersonic && !this.has_clock)
-      this.has_Knuckles = Math.random() > 0.95;
+    if(level==1){
+      this.has_ring = Math.random() > 0.8;
+    }
+    else if(level==2){
+      this.has_ring = Math.random() > 0.8;
+      if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
+      if (!this.has_ring && !this.has_supersonic)
+        this.has_clock = Math.random() > 0.9;
+    }
+    else{
+      this.has_ring = Math.random() > 0.7;
+      if (!this.has_ring) this.has_supersonic = Math.random() > 0.9;
+      if (!this.has_ring && !this.has_supersonic)
+        this.has_clock = Math.random() > 0.9;
+      if (!this.has_ring && !this.has_supersonic && !this.has_clock)
+        this.has_Knuckles = Math.random() > 0.95;
+    }
   }
 }
 
@@ -790,7 +809,7 @@ document.addEventListener("keydown", (e) => {
       //슈퍼소닉 5초유지
       setTimeout(function () {
         is_supersonic = false;
-      }, 5000);
+      }, 3000);
     }
   }
   if (key == "2") {
@@ -817,6 +836,9 @@ document.addEventListener("keydown", (e) => {
         game.ball[0].my = game.ball[0].my * game.ball[0].speed;
 
         if (game.ball[1] != null) {
+          game.ball[1].mx = (game.ball[1].mx / game.ball[1].speed) * 1;
+          game.ball[1].my = (game.ball[1].my / game.ball[1].speed) * 1;
+          game.ball[1].speed = 1;
           game.ball[1].speed = ballSpeeds[game.level - 1];
           game.ball[1].mx = game.ball[1].mx * game.ball[1].speed;
           game.ball[1].my = game.ball[1].my * game.ball[1].speed;
@@ -864,6 +886,16 @@ document.addEventListener("keydown", (e) => {
     //Retry
     $("#click-sound").get(0).play();
     score = 0; //점수 초기화
+    //아이템 초기화
+    ring = 0;
+    supersonic = 0;
+    clock = 0;
+    Knuckles = 0;
+    is_supersonic = false;
+    document.getElementById("ring_count").innerText = ring;
+    document.getElementById("supersonic_count").innerText = supersonic;
+    document.getElementById("clock_count").innerText = clock;
+    document.getElementById("Knuckles_count").innerText = Knuckles;
     if(g_level<3) $("#sound-bg").attr("src", "music/lv" + g_level + "_bgm.mp3");
     else $("#sound-bg").attr("src", "music/boss1.mp3");
     controlMusic();
@@ -916,9 +948,6 @@ class Game {
       if (this.timeCount >= 100) this.state = "play";
       return;
     }
-    //삭제 해ㅐ애ㅐ애
-    if (this.level == 2 && this.state == "go2Lv3") this.state = "clear"; //임시!!!!!!!!!!(보스전 만들면 삭제 필)
-    //삭제 해ㅐ애애ㅐㅇ
     if (this.state != "play") return;
 
     this.paddle.x = mouseX - PADDLE_WIDTH / 2;
@@ -930,6 +959,7 @@ class Game {
       this.ball[0].collideWall(0, 0, WIDTH);
       this.paddle.collide(this.ball[0]);
       if (this.level != 3) {
+        //레벨 1,2
         if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)) {
           if (!is_supersonic) {
             this.ball[0].mx *= -1;
@@ -941,15 +971,22 @@ class Game {
           }
         }
       }else{
+        //보스전
         if(this.boss){
           this.boss.collide(this.ball[0]);
           this.boss.collideb(this.ball[0]);
+          if(this.ball[1]!=null){
+            this.boss.collide(this.ball[1]);
+            this.boss.collideb(this.ball[1]);
+          }
         }
         if(this.boss2){
           this.boss2.collide(this.ball[0]);
+          if(this.ball[1]!=null) this.boss2.collide(this.ball[1]);
         }
         if(this.boss3){
           this.boss3.collide(this.ball[0]);
+          if(this.ball[1]!=null) this.boss3.collide(this.ball[1]);
           this.boss3.create(this.bricks);
         }
         if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)){
@@ -1009,7 +1046,6 @@ class Game {
       if (this.bricks.count == 0) {
         if (this.level == 1) game.state = "go2Lv2";
         else if (this.level == 2) game.state = "go2Lv3";
-        else game.state = "clear";
       }
     }
 
@@ -1032,6 +1068,7 @@ class Game {
       PADDLE_HEIGHT,
       COLOR
       );
+      game.ball[1]=null;
     }
   }
   if(!this.boss2){
@@ -1053,6 +1090,7 @@ class Game {
       PADDLE_HEIGHT,
       COLOR
       );
+      game.ball[1]=null;
     }
   }
   }
