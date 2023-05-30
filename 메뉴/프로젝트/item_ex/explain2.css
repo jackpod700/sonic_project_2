@@ -15,6 +15,10 @@
     background: 
       linear-gradient(to left, #0000,rgb(50 50 50 / 88%)),
       url("pic/mapbackground4.gif") top/cover;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
   }
   
   #line {
