@@ -888,7 +888,7 @@ document.addEventListener("keydown", (e) => {
       $("body").fadeOut(1000);
     }, 1000);
     setTimeout(function () {
-      location.href = "../메뉴/프로젝트/menu/menu.html";
+      location.href = "../menu/project/menu/menu.html";
     }, 2000);
   }
   if (key == "r" && (game.state == "lose" || game.state == "clear")) {
@@ -1183,7 +1183,7 @@ function resultScreen_nextStage() {
     if (timeCnt == 3) {
       clearInterval(req);
       location.href =
-        "../메뉴/프로젝트/item_ex/explain" + (Number(g_level) + 1) + ".html";
+        "../menu/project/item_ex/explain" + (Number(g_level) + 1) + ".html";
     }
   }, 1000);
 }
