@@ -262,8 +262,9 @@ class Ball {
     this.angle = angle;
     this.count = 0;
     this.is_sonic = true;
-    this.colx;
-    this.coly;
+    this.colx=x;
+    this.coly=y;
+    this.ck=1;
   }
   setAngle(angle) {
     var radian = (angle / 180) * Math.PI;
@@ -299,21 +300,21 @@ class Ball {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
-      ck = 1;
+      this.ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
     if (this.mx > 0 && this.collideX > right) {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
-      ck = 1;
+      this.ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
     if (this.my < 0 && this.collideY < top) {
       this.my *= -1;
       this.colx = this.x;
       this.coly = this.y;
-      ck = 1;
+      this.ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
   }
@@ -353,7 +354,6 @@ eggman1Img.src = "eggman1/eggman1-0.png";
 var bossx = WIDTH / 2;
 var bossy = HEIGHT - 645;
 var bossr = 40;
-var ck = 1;
 
 class Eggman1 {
   constructor(x, y, hp) {
@@ -377,12 +377,12 @@ class Eggman1 {
     var x = 2 * ball.x - bossx;
     var y = 2 * ball.y - bossy;
 
-    if (check() > 0 && ck != 0) {
+    if (check() > 0 && ball.ck != 0) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ck = 0;
+      ball.ck = 0;
       this.hp--;
       $("#eggman-collide").get(0).play();
     }
@@ -395,14 +395,14 @@ class Eggman1 {
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
-    if (check() > 0 && ck != 2) {
+    if (check() > 0 && ball.ck != 2) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
-      ball.setcircleCollide(2 * radian);
-      ck = 2;
+      ball.ck = 2;
       if (ring > 0&&ball.is_sonic==true) {
         //this.paddle.x=PADDLE_X;
+        ball.setcircleCollide(2 * radian);
         ring--;
         document.getElementById("ring_count").innerText = ring;
         $("#sound-ring-fall").get(0).play();
@@ -470,12 +470,12 @@ class Eggman2 {
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
-    if (check() > 0 && ck != 0) {
+    if (check() > 0 && ball.ck != 0) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ck = 0;
+      ball.ck = 0;
       this.hp--;
       $("#eggman-collide").get(0).play();
     }
@@ -547,12 +547,12 @@ class Eggman3 {
     var x = 2 * ball.x - bossx;
     var y = 2 * ball.y - bossy;
 
-    if (check() > 0 && ck != 0) {
+    if (check() > 0 && ball.ck != 0) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ck = 0;
+      ball.ck = 0;
       this.hp--;
       $("#eggman-collide").get(0).play();
     }
@@ -1004,7 +1004,7 @@ class Game {
             this.ball[0].mx *= -1;
             this.ball[0].colx = this.ball[0].x;
             this.ball[0].coly = this.ball[0].y;
-            ck = 1;
+            this.ball[0].ck = 1;
           }
         }
         if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY)) {
@@ -1012,7 +1012,7 @@ class Game {
             this.ball[0].my *= -1;
             this.ball[0].colx = this.ball[0].x;
             this.ball[0].coly = this.ball[0].y;
-            ck = 1;
+            this.ball[0].ck = 1;
           }
         }
       }
@@ -1023,9 +1023,15 @@ class Game {
         this.paddle.collide(this.ball[1]);
         if (this.bricks.collide(this.ball[1].collideX, this.ball[1].y)) {
           this.ball[1].mx *= -1;
+          this.ball[1].colx = this.ball[1].x;
+          this.ball[1].coly = this.ball[1].y;
+          this.ball[1].ck = 1;
         }
         if (this.bricks.collide(this.ball[1].x, this.ball[1].collideY)) {
           this.ball[1].my *= -1;
+          this.ball[1].colx = this.ball[1].x;
+          this.ball[1].coly = this.ball[1].y;
+          this.ball[1].ck = 1;
         }
       }
     }
