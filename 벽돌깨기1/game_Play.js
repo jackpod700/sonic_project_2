@@ -189,7 +189,7 @@ function mkBricks(level) {
     }
     return data;
   }
-  if (level == 3) {
+  if (level == 4) {
     var row = 8;
     var col = 8;
     var data = [];
@@ -205,7 +205,7 @@ function mkBricks(level) {
     }
     return data;
   }
-  if (level == 4) {
+  if (level == 3) {
     var row = 7;
     var col = 8;
     var data = [];
@@ -916,7 +916,6 @@ document.addEventListener("keydown", (e) => {
 class Game {
   constructor(level) {
     var brickSettings = [brickData, 0, 50, WIDTH, 150];
-    var boss = [(WIDTH - 360) / 2, HEIGHT - 700, 3];
 
     this.level = level;
 
@@ -942,7 +941,7 @@ class Game {
     } else if (level == 2) {
       this.bricks = new Bricks(brickData, 0, 50, WIDTH, 250);
     } else {
-      this.boss = new Eggman1(...boss);
+      this.boss = new Eggman2((WIDTH - 142) / 2 - 28, HEIGHT - 702, 3);
       this.bricks = new Bricks(brickData, 0, 50, WIDTH, 400);
     }
     this.ball[1] = null;
@@ -983,15 +982,17 @@ class Game {
         //보스전
         if (this.boss) {
           this.boss.collide(this.ball[0]);
-          this.boss.collideb(this.ball[0]);
           if (this.ball[1] != null) {
             this.boss.collide(this.ball[1]);
-            this.boss.collideb(this.ball[1]);
           }
         }
         if (this.boss2) {
           this.boss2.collide(this.ball[0]);
-          if (this.ball[1] != null) this.boss2.collide(this.ball[1]);
+          this.boss2.collideb(this.ball[0]);
+          if (this.ball[1] != null) {
+            this.boss2.collide(this.ball[1]);
+            this.boss2.collideb(this.ball[1]);
+          }
         }
         if (this.boss3) {
           this.boss3.collide(this.ball[0]);
@@ -1064,7 +1065,7 @@ class Game {
 
     if (!this.boss) {
       if (this.phase == 1) {
-        this.boss2 = new Eggman2((WIDTH - 142) / 2 - 28, HEIGHT - 702, 3);
+        this.boss2 = new Eggman1((WIDTH - 360) / 2, HEIGHT - 700, 3);
         this.phase = 2;
         this.bricks = new Bricks(mkBricks(4), 0, 50, WIDTH, 400);
         this.ball[0] = new Ball(
