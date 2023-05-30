@@ -2,6 +2,8 @@ var bgVol;
 
 function controlMusic() {
   window.focus();
+  $("#sound-bg").prop("volume", bgVol);
+
   $("#sound-bg").get(0).play();
 
   setTimeout(function () {
