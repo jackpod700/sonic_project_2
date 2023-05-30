@@ -24,9 +24,9 @@
   font-family: 'sonic', serif;
   font-size: 30px;
   margin: 0 10%;
-  -webkit-animation: move 20s linear;  
-  -moz-animation: move 20s linear;  
-  animation: move 23s linear;  
+  -webkit-animation: move 28s linear;  
+  -moz-animation: move 28s linear;  
+  animation: move 28s linear;  
 }
 .credits span {
   display: block;
