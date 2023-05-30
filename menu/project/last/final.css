@@ -1,0 +1,48 @@
+@font-face {
+  font-family: "sonic";
+  src: url("../NiseSegasonic.ttf")
+}
+  body {
+  background: #000;
+  color: #fff;
+  font-family: 'arial',sans-serif;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.container {
+  margin: 0 auto;
+  height: auto;
+  width: 1000px;
+  text-align: center;
+}
+
+.credits {
+  text-shadow: 0 -4px 8px blue, 0 3px 8px #000000;
+  font-family: 'sonic', serif;
+  font-size: 30px;
+  margin: 0 10%;
+  -webkit-animation: move 20s linear;  
+  -moz-animation: move 20s linear;  
+  animation: move 23s linear;  
+}
+.credits span {
+  display: block;
+  margin: 5px 0;
+  width: 100%;
+}
+
+@-webkit-keyframes move {
+  0% {margin-top: 800px;}
+  100% {margin-top: -1500px;}
+}
+@-moz-keyframes move {
+  0% {margin-top: 800px;}
+  100% {margin-bottom: -1500px;}
+}
+@-o-keyframes move {
+  0% {margin-top: 800px;}
+  100% {margin-bottom: -1500px;}
+}
