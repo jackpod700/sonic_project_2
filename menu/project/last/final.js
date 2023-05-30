@@ -15,4 +15,5 @@ $(document).ready(function () {
 
     bgVol = localStorage.getItem("bgVol");
     controlMusic();
+    setTimeout(	function(){window.close();}, 13000);
 })

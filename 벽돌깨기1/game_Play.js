@@ -617,7 +617,7 @@ class Paddle {
       ball.setAngle(angle);
       ball.colx = ball.x;
       ball.coly = ball.y;
-      ck = 1;
+      ball.ck = 1;
       $("#sound-jump").get(0).play();
     }
   }
@@ -911,6 +911,14 @@ document.addEventListener("keydown", (e) => {
     controlMusic();
     startGame(g_level);
   }
+  if (key == "e" && game.state == "clear"){
+    setTimeout(function () {
+      $("body").fadeOut(1000);
+    }, 1000);
+    setTimeout(function () {
+      location.href = "../menu/project/last/final.html";
+    }, 2000);
+  }
 });
 
 class Game {
@@ -1200,6 +1208,8 @@ var main_menu_img = new Image();
 main_menu_img.src = "resultScreen_btn/main-menu.png";
 var retry_img = new Image();
 retry_img.src = "resultScreen_btn/retry.png";
+var Ending_img=new Image();
+Ending_img.src="resultScreen_btn/ending.png";
 //종료(클리어 or 실패) 결과 화면 캔버스 그리기
 function resultScreen_end() {
   if (myReq) cancelAnimationFrame(myReq);
@@ -1227,16 +1237,33 @@ function resultScreen_end() {
   ctx.textBaseline = "middle";
   var str = "Your score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
+  if(game.state=="lose"){
+    ctx.font = "15px sonic";
+    ctx.fillStyle = "#ff8832";
+    ctx.fillText("Retry", WIDTH * 0.37, HEIGHT * 0.7);
+    ctx.drawImage(retry_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+  
+    ctx.fillStyle = "#ff8833";
+    ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
+    ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
+    ctx.closePath();
+  }
+  else{
+    ctx.font = "15px sonic";
+    ctx.fillStyle = "#ff8832";
+    ctx.fillText("Retry", WIDTH * 0.25, HEIGHT * 0.7);
+    ctx.drawImage(retry_img, WIDTH * 0.23, HEIGHT * 0.6, 40, 40);
+  
+    ctx.fillStyle = "#ff8833";
+    ctx.fillText("Main-Menu", WIDTH * 0.50, HEIGHT * 0.7);
+    ctx.drawImage(main_menu_img, WIDTH * 0.47, HEIGHT * 0.6, 40, 40);
+    
 
-  ctx.font = "15px sonic";
-  ctx.fillStyle = "#ff8832";
-  ctx.fillText("Retry", WIDTH * 0.37, HEIGHT * 0.7);
-  ctx.drawImage(retry_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+    ctx.fillText("Ending", WIDTH * 0.75, HEIGHT * 0.7);
+    ctx.drawImage(Ending_img, WIDTH * 0.73, HEIGHT * 0.6, 40, 40);
+    ctx.closePath();
+  }
 
-  ctx.fillStyle = "#ff8833";
-  ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
-  ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
-  ctx.closePath();
 }
 //멈춤 화면 캔버스 그리기
 function resultScreen_pause() {
