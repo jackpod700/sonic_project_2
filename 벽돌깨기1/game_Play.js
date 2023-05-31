@@ -31,7 +31,7 @@ function controlSound() {
   $("#sound-supersonic").prop("volume", effVol);
   $("#sound-item-get").prop("volume", effVol);
   $("#sound-clock").prop("volume", effVol);
-  $("#sound-knucles").prop("volume", effVol);
+  $("#sound-knuckles").prop("volume", effVol);
   $("#sound-wall-collide").prop("volume", effVol);
   $("#sound-brick-collide").prop("volume", effVol);
   $("#eggman-collide").prop("volume", effVol);
