@@ -19,7 +19,7 @@ function controlMusic() {
 $("#sonicmap").click(function(){
     start(1)
 })
-$("#shadowmap").click(function(){
+$("#knucklesmap").click(function(){
     start(2)
 })
 $("#eggmanmap").click(function(){
