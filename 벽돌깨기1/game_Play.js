@@ -1084,13 +1084,16 @@ class Game {
         this.ball[1] = null;
       }
     }
+    
     if (this.level != 3) {
+      //1레벨 클리어 조건
         if (this.level == 1){
           if (this.bricks.count == 0) {
              game.state = "go2Lv2";
           }
          }
         if (this.level == 2){
+      //2레벨 클리어 조건
           if (mobcount == 0) game.state = "go2Lv3";
         } 
     }
@@ -1218,7 +1221,8 @@ function resultScreen_nextStage() {
   ctx.font = "20px sonic";
   ctx.textBaseline = "middle";
   //링 개수*10만큼 점수 더함
-  score+=ring*5;
+  score+=ring*10;
+  ring=0;
   var str = "current score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.55);
   ctx.closePath();
