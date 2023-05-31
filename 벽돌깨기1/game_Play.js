@@ -35,6 +35,7 @@ function controlSound() {
   $("#sound-wall-collide").prop("volume", effVol);
   $("#sound-brick-collide").prop("volume", effVol);
   $("#eggman-collide").prop("volume", effVol);
+  $("#click-sound").prop("volume",effVol);
 }
 
 function controlMusic() {

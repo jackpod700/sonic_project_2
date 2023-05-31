@@ -1,3 +1,5 @@
+var effVol=1;
+effVol = localStorage.getItem("effVol");
 function start() {
   setTimeout(function () {
     $("body").fadeOut(1000);
@@ -7,6 +9,7 @@ function start() {
   }, 2000);
 }
 $("#start_button").click(function () {
+  $("#click-sound").prop("volume",effVol);
   $("#click-sound").get(0).play();
   start();
 });
