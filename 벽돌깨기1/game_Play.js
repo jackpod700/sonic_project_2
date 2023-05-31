@@ -262,8 +262,9 @@ class Ball {
     this.angle = angle;
     this.count = 0;
     this.is_sonic = true;
-    this.colx;
-    this.coly;
+    this.colx=x;
+    this.coly=y;
+    this.ck=1;
   }
   setAngle(angle) {
     var radian = (angle / 180) * Math.PI;
@@ -299,21 +300,21 @@ class Ball {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
-      ck = 1;
+      this.ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
     if (this.mx > 0 && this.collideX > right) {
       this.mx *= -1;
       this.colx = this.x;
       this.coly = this.y;
-      ck = 1;
+      this.ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
     if (this.my < 0 && this.collideY < top) {
       this.my *= -1;
       this.colx = this.x;
       this.coly = this.y;
-      ck = 1;
+      this.ck = 1;
       $("#sound-wall-collide").get(0).play();
     }
   }
@@ -353,7 +354,6 @@ eggman1Img.src = "eggman1/eggman1-0.png";
 var bossx = WIDTH / 2;
 var bossy = HEIGHT - 645;
 var bossr = 40;
-var ck = 1;
 
 class Eggman1 {
   constructor(x, y, hp) {
@@ -377,12 +377,12 @@ class Eggman1 {
     var x = 2 * ball.x - bossx;
     var y = 2 * ball.y - bossy;
 
-    if (check() > 0 && ck != 0) {
+    if (check() > 0 && ball.ck != 0) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ck = 0;
+      ball.ck = 0;
       this.hp--;
       $("#eggman-collide").get(0).play();
     }
@@ -395,16 +395,15 @@ class Eggman1 {
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
-    if (check() > 0 && ck != 2) {
-      var radian =
-        Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
-        Math.atan((y - ball.y) / (x - ball.x));
+    if (check() > 0 && ball.ck != 2) {
+      var radian = Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) - Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ball.mx *= 1.5;
       ball.my *= 1.5;
-      ck = 2;
+      ball.ck = 2;
       if (ring > 0&&ball.is_sonic==true) {
         //this.paddle.x=PADDLE_X;
+        ball.setcircleCollide(2 * radian);
         ring--;
         document.getElementById("ring_count").innerText = ring;
         $("#sound-ring-fall").get(0).play();
@@ -472,12 +471,12 @@ class Eggman2 {
     var x = 2 * ball.x - this.bx;
     var y = 2 * ball.y - this.by;
 
-    if (check() > 0 && ck != 0) {
+    if (check() > 0 && ball.ck != 0) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ck = 0;
+      ball.ck = 0;
       this.hp--;
       $("#eggman-collide").get(0).play();
     }
@@ -549,12 +548,12 @@ class Eggman3 {
     var x = 2 * ball.x - bossx;
     var y = 2 * ball.y - bossy;
 
-    if (check() > 0 && ck != 0) {
+    if (check() > 0 && ball.ck != 0) {
       var radian =
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ck = 0;
+      ball.ck = 0;
       this.hp--;
       $("#eggman-collide").get(0).play();
     }
@@ -619,7 +618,7 @@ class Paddle {
       ball.setAngle(angle);
       ball.colx = ball.x;
       ball.coly = ball.y;
-      ck = 1;
+      ball.ck = 1;
       $("#sound-jump").get(0).play();
     }
   }
@@ -916,6 +915,14 @@ document.addEventListener("keydown", (e) => {
   if(e.keyCode == 32 && (game.state == "phase1" || game.state =="phase2" ||game.state =="phase3")){
       game.state = "play";
       n = 0;
+    }
+  if (key == "e" && game.state == "clear"){
+    setTimeout(function () {
+      $("body").fadeOut(1000);
+    }, 1000);
+    setTimeout(function () {
+      location.href = "../menu/project/last/final.html";
+    }, 2000);
   }
 });
 
@@ -1010,7 +1017,7 @@ class Game {
             this.ball[0].mx *= -1;
             this.ball[0].colx = this.ball[0].x;
             this.ball[0].coly = this.ball[0].y;
-            ck = 1;
+            this.ball[0].ck = 1;
           }
         }
         if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY)) {
@@ -1018,7 +1025,7 @@ class Game {
             this.ball[0].my *= -1;
             this.ball[0].colx = this.ball[0].x;
             this.ball[0].coly = this.ball[0].y;
-            ck = 1;
+            this.ball[0].ck = 1;
           }
         }
       }
@@ -1031,13 +1038,12 @@ class Game {
           this.ball[1].mx *= -1;
           this.ball[1].colx = this.ball[1].x;
           this.ball[1].coly = this.ball[1].y;
-          ck = 1;
         }
         if (this.bricks.collide(this.ball[1].x, this.ball[1].collideY)) {
           this.ball[1].my *= -1;
           this.ball[1].colx = this.ball[1].x;
           this.ball[1].coly = this.ball[1].y;
-          ck = 1;
+          this.ball[1].ck = 1;
         }
       }
     }
@@ -1232,6 +1238,12 @@ function next_phase1(){
   ctx.textBaseline = "top";
   var str = ("Dr.Egg : Hi, Sonic. You can't stop me.");
   ctx.fillText(str, 38, 630);
+  ctx.fillStyle = "White";
+  ctx.font = "18px sonic";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  var str = ("-space-");
+  ctx.fillText(str, 565, 745);
   ctx.drawImage(
     phaseImg,
     480,
@@ -1265,6 +1277,12 @@ function next_phase2(){
   ctx.textBaseline = "top";
   var str = ("Dr.Egg : I'm angry! I kill you.");
   ctx.fillText(str, 38, 630);
+  ctx.fillStyle = "White";
+  ctx.font = "18px sonic";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  var str = ("-space-");
+  ctx.fillText(str, 565, 745);
   ctx.drawImage(
     phaseImg,
     480,
@@ -1298,6 +1316,12 @@ function next_phase3(){
   ctx.textBaseline = "top";
   var str = ("Dr.Egg : No!!! This can't end like this.");
   ctx.fillText(str, 38, 630);
+  ctx.fillStyle = "White";
+  ctx.font = "20px sonic";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  var str = ("-space-");
+  ctx.fillText(str, 38, 630);
   ctx.drawImage(
     phaseImg,
     480,
@@ -1322,6 +1346,8 @@ var main_menu_img = new Image();
 main_menu_img.src = "resultScreen_btn/main-menu.png";
 var retry_img = new Image();
 retry_img.src = "resultScreen_btn/retry.png";
+var Ending_img=new Image();
+Ending_img.src="resultScreen_btn/ending.png";
 //종료(클리어 or 실패) 결과 화면 캔버스 그리기
 function resultScreen_end() {
   if (myReq) cancelAnimationFrame(myReq);
@@ -1349,16 +1375,33 @@ function resultScreen_end() {
   ctx.textBaseline = "middle";
   var str = "Your score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
+  if(game.state=="lose"){
+    ctx.font = "15px sonic";
+    ctx.fillStyle = "#ff8832";
+    ctx.fillText("Retry", WIDTH * 0.37, HEIGHT * 0.7);
+    ctx.drawImage(retry_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+  
+    ctx.fillStyle = "#ff8833";
+    ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
+    ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
+    ctx.closePath();
+  }
+  else{
+    ctx.font = "15px sonic";
+    ctx.fillStyle = "#ff8832";
+    ctx.fillText("Retry", WIDTH * 0.25, HEIGHT * 0.7);
+    ctx.drawImage(retry_img, WIDTH * 0.23, HEIGHT * 0.6, 40, 40);
+  
+    ctx.fillStyle = "#ff8833";
+    ctx.fillText("Main-Menu", WIDTH * 0.50, HEIGHT * 0.7);
+    ctx.drawImage(main_menu_img, WIDTH * 0.47, HEIGHT * 0.6, 40, 40);
+    
 
-  ctx.font = "15px sonic";
-  ctx.fillStyle = "#ff8832";
-  ctx.fillText("Retry", WIDTH * 0.37, HEIGHT * 0.7);
-  ctx.drawImage(retry_img, WIDTH * 0.35, HEIGHT * 0.6, 40, 40);
+    ctx.fillText("Ending", WIDTH * 0.75, HEIGHT * 0.7);
+    ctx.drawImage(Ending_img, WIDTH * 0.73, HEIGHT * 0.6, 40, 40);
+    ctx.closePath();
+  }
 
-  ctx.fillStyle = "#ff8833";
-  ctx.fillText("Main-Menu", WIDTH * 0.67, HEIGHT * 0.7);
-  ctx.drawImage(main_menu_img, WIDTH * 0.65, HEIGHT * 0.6, 40, 40);
-  ctx.closePath();
 }
 //멈춤 화면 캔버스 그리기
 function resultScreen_pause() {
