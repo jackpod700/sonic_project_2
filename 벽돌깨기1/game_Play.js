@@ -560,7 +560,7 @@ class Eggman3 {
   }
 
   create(bricks) {
-    if (this.mct == 2000) {
+    if (this.mct == 2200) {
       for (var j = 0; j < 7; j++) {
         for (var k = 0; k < 8; k++) {
           if (bricks.data[j][k] == 0) {
@@ -1070,6 +1070,7 @@ class Game {
         this.ball[0].y = PADDLE_Y - BALL_RADIUS;
         this.ball[0].setAngle(80);
         ring--;
+        ck = 1;
         document.getElementById("ring_count").innerText = ring;
         is_supersonic = false;
         $("#sound-ring-fall").get(0).play();
@@ -1334,7 +1335,7 @@ function next_phase3(){
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   var str = ("-space-");
-  ctx.fillText(str, 38, 630);
+  ctx.fillText(str, 565, 745);
   ctx.drawImage(
     phaseImg,
     480,
