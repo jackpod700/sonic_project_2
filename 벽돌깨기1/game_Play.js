@@ -400,8 +400,11 @@ class Eggman1 {
     if (check() > 0 && ball.ck != 2) {
       var radian = Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) - Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ball.mx *= 2;
-      ball.my *= 2;
+      if(ck == 1){
+        ball.mx *= 2;
+        ball.my *= 2;
+        ck = 0;
+      }
       ball.ck = 2;
       if (ring > 0&&ball.is_sonic==true) {
         //this.paddle.x=PADDLE_X;
