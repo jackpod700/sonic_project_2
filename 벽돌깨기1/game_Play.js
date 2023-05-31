@@ -388,6 +388,8 @@ class Eggman1 {
       this.hp--;
       this.hitmotion = 1;
       $("#eggman-collide").get(0).play();
+      ball.colx= ball.x;
+      ball.coly= ball.y;
     }
   }
 
@@ -416,6 +418,9 @@ class Eggman1 {
       } else if(ring<=0&&ball.is_sonic==true) {
         game.state = "lose";
       }
+      
+      ball.colx= ball.x;
+      ball.coly= ball.y;
     }
   }
 
