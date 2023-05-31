@@ -369,6 +369,7 @@ class Eggman1 {
     this.cek = 0;
     this.a = 0;
     this.v = 1.392015;
+    this.hitmotion = 0; // 보스를 때렸을 때 보스가 잠시 무적 and 깜빡임;
   }
 
   collide(ball) {
@@ -384,6 +385,7 @@ class Eggman1 {
       ball.setcircleCollide(2 * radian);
       ball.ck = 0;
       this.hp--;
+      this.hitmotion = 1;
       $("#eggman-collide").get(0).play();
     }
   }
@@ -398,8 +400,8 @@ class Eggman1 {
     if (check() > 0 && ball.ck != 2) {
       var radian = Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) - Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
-      ball.mx *= 1.5;
-      ball.my *= 1.5;
+      ball.mx *= 2;
+      ball.my *= 2;
       ball.ck = 2;
       if (ring > 0&&ball.is_sonic==true) {
         //this.paddle.x=PADDLE_X;
@@ -708,8 +710,8 @@ class Bricks {
       if(this.data[row][col] == 2 || this.data[row][col] == 3||this.data[row][col] == 4){
         this.data[row][col]--;
         if (ck ==1){
-          ball.mx *= 2.5;
-          ball.my *= 2.5;
+          ball.mx *= 2;
+          ball.my *= 2;
           ck = 0;
         }
         if(this.data[row][col] == 1){
