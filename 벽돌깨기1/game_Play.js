@@ -370,7 +370,9 @@ class Eggman1 {
     this.cek = 0;
     this.a = 0;
     this.v = 1.392015;
-    this.hitmotion = 0; // 보스를 때렸을 때 보스가 잠시 무적 and 깜빡임;
+    this.hitmotion = 1; // 보스를 때렸을 때 보스가 잠시 무적 and 깜빡임;
+    this.hitct1=0;
+    this.hitct2=0;
   }
 
   collide(ball) {
@@ -385,8 +387,10 @@ class Eggman1 {
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ball.ck = 0;
-      this.hp--;
-      this.hitmotion = 1;
+      if (this.hitmotion == 1){
+        this.hp--;
+        this.hitmotion = 0;
+      }
       $("#eggman-collide").get(0).play();
       ball.colx= ball.x;
       ball.coly= ball.y;
@@ -418,7 +422,7 @@ class Eggman1 {
       } else if(ring<=0&&ball.is_sonic==true) {
         game.state = "lose";
       }
-      
+
       ball.colx= ball.x;
       ball.coly= ball.y;
     }
@@ -426,13 +430,29 @@ class Eggman1 {
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.drawImage(
-      eggman1Img,
-      this.x,
-      this.y,
-      360,
-      300
-    );
+    if(this.hitmotion){
+      ctx.drawImage(
+        eggman1Img,
+        this.x,
+        this.y,
+        360,
+        300
+      );
+    } else {
+      this.hitct1++;
+      this.hitct2++;
+      if(this.hitct1>8){
+      ctx.drawImage(
+        eggman1Img,
+        this.x,
+        this.y,
+        360,
+        300
+      );
+      if(this.hitct1==16) this.hitct1 = 0;
+    }
+
+    }
     eggman1Img.src="eggman1/eggman1-"+this.count+".png";
     if(this.count==279) this.count = -1;
     if(this.count==67) this.count = 85;
@@ -457,6 +477,10 @@ class Eggman1 {
         this.cek = 0;
       }
     }
+    if(this.hitct2>64){
+      this.hitmotion = 1;
+      this.hitct2 = 0;
+    }
     ctx.closePath();
   }
 }
@@ -474,6 +498,9 @@ class Eggman2 {
     this.by = bossy;
     this.ct = 1;
     this.fix = 55;
+    this.hitmotion = 1; // 보스를 때렸을 때 보스가 잠시 무적 and 깜빡임;
+    this.hitct1=0;
+    this.hitct2=0;
   }
 
   collide(ball) {
@@ -488,21 +515,39 @@ class Eggman2 {
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ball.ck = 0;
-      this.hp--;
+      if (this.hitmotion == 1){
+        this.hp--;
+        this.hitmotion = 0;
+      }
       $("#eggman-collide").get(0).play();
     }
   }
 
   draw(ctx) {
     ctx.beginPath();
+    if (this.hitmotion){
+      ctx.drawImage(
+        eggman2Img,
+        this.x,
+        this.y,
+        142,
+        97
+      );    
+    } else {
+      this.hitct1++;
+      this.hitct2++;
+      if(this.hitct1>8){
+        ctx.drawImage(
+          eggman2Img,
+          this.x,
+          this.y,
+          142,
+          97
+        );    
+      if(this.hitct1==16) this.hitct1 = 0;
+      }
+    }
     eggman2Img.src="eggman2/eggman2-"+this.count+".png";
-    ctx.drawImage(
-      eggman2Img,
-      this.x,
-      this.y,
-      142,
-      97
-    );
     if(this.ct<0){
       if(this.count==11) this.count = 6;
       else {
@@ -537,6 +582,10 @@ class Eggman2 {
       }
     }
     ctx.closePath();
+    if(this.hitct2>64){
+      this.hitmotion = 1;
+      this.hitct2 = 0;
+    }
   }
 }
 
@@ -551,6 +600,9 @@ class Eggman3 {
     this.count = 0;
     this.dcount = 0;
     this.mct = 0;
+    this.hitmotion = 1; // 보스를 때렸을 때 보스가 잠시 무적 and 깜빡임;
+    this.hitct1=0;
+    this.hitct2=0;
   }
 
   collide(ball) {
@@ -565,7 +617,10 @@ class Eggman3 {
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
       ball.ck = 0;
-      this.hp--;
+      if (this.hitmotion == 1){
+        this.hp--;
+        this.hitmotion = 0;
+      }
       $("#eggman-collide").get(0).play();
     }
   }
@@ -589,6 +644,16 @@ class Eggman3 {
 
   draw(ctx) {
     ctx.beginPath();
+    if(this.hitmotion){
+      ctx.drawImage(eggman3Img, this.x, this.y, 140, 130);
+    } else {
+      this.hitct1++;
+      this.hitct2++;
+      if(this.hitct1>8){
+        ctx.drawImage(eggman3Img, this.x, this.y, 140, 130);
+        if(this.hitct1==16) this.hitct1 = 0;
+      }
+    }
     eggman3Img.src = "eggman3/eggman3-" + this.count + ".png";
     if (this.count == 5) this.count = 0;
     else {
@@ -599,8 +664,11 @@ class Eggman3 {
         this.dcount = 0;
       }
     }
-    ctx.drawImage(eggman3Img, this.x, this.y, 140, 130);
     ctx.closePath();
+    if(this.hitct2>64){
+      this.hitmotion = 1;
+      this.hitct2 = 0;
+    }
   }
 }
 
