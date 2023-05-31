@@ -179,7 +179,7 @@ function mkBricks(level) {
       var line = new Array(col);
       for (var c = 0; c < col; c++) {
         num = Math.floor(Math.random() * 9);
-        if (num % 9 > 0) line[c] = new Brick(lv2Img, 2);
+        if (num % 9 > 1) line[c] = new Brick(lv2Img, 2);
         else {
           line[c] = Math.floor(Math.random() * 3) + 2;
           mobcount++;
@@ -400,6 +400,8 @@ class Eggman1 {
         Math.atan((ball.coly - ball.y) / (ball.colx - ball.x)) -
         Math.atan((y - ball.y) / (x - ball.x));
       ball.setcircleCollide(2 * radian);
+      ball.mx *= 1.5;
+      ball.my *= 1.5;
       ck = 2;
       if (ring > 0&&ball.is_sonic==true) {
         //this.paddle.x=PADDLE_X;
@@ -559,12 +561,12 @@ class Eggman3 {
   }
 
   create(bricks) {
-    if (this.mct == 2500) {
+    if (this.mct == 2000) {
       for (var j = 0; j < 7; j++) {
         for (var k = 0; k < 8; k++) {
           if (bricks.data[j][k] == 0) {
-            var num = Math.floor(Math.random() * 15);
-            if (num % 15 < 2) {
+            var num = Math.floor(Math.random() * 12);
+            if (num % 12 < 3) {
               bricks.data[j][k] = Math.floor(Math.random() * 3) + 2;
             }
           }
@@ -911,6 +913,10 @@ document.addEventListener("keydown", (e) => {
     controlMusic();
     startGame(g_level);
   }
+  if(e.keyCode == 32 && (game.state == "phase1" || game.state =="phase2" ||game.state =="phase3")){
+      game.state = "play";
+      n = 0;
+  }
 });
 
 class Game {
@@ -1023,9 +1029,15 @@ class Game {
         this.paddle.collide(this.ball[1]);
         if (this.bricks.collide(this.ball[1].collideX, this.ball[1].y)) {
           this.ball[1].mx *= -1;
+          this.ball[1].colx = this.ball[1].x;
+          this.ball[1].coly = this.ball[1].y;
+          ck = 1;
         }
         if (this.bricks.collide(this.ball[1].x, this.ball[1].collideY)) {
           this.ball[1].my *= -1;
+          this.ball[1].colx = this.ball[1].x;
+          this.ball[1].coly = this.ball[1].y;
+          ck = 1;
         }
       }
     }
@@ -1123,21 +1135,32 @@ class Game {
       if (this.boss) {
         this.boss.draw(ctx);
         this.bricks.draw(ctx);
+        if(n ==1 ){
+          game.state = "phase1";
+        }
         if (this.boss.hp == 0) {
           delete this.boss;
           this.phase = 1;
+          n = 1;
         }
       }
       if (this.boss2) {
         this.boss2.draw(ctx);
         this.bricks.draw(ctx);
+        if(n ==1 ){
+          game.state = "phase2";
+        }
         if (this.boss2.hp == 0) {
           delete this.boss2;
+          n = 1;
         }
       }
       if (this.boss3) {
         this.boss3.draw(ctx);
         this.bricks.draw(ctx);
+        if(n ==1 ){
+          game.state = "phase3";
+        }
         if (this.boss3.hp == 0) {
           game.state = "clear";
           delete this.boss3;
@@ -1147,6 +1170,8 @@ class Game {
     document.getElementById("score_count").innerHTML = score;
   }
 }
+
+var n = 1;
 
 //결과+멈춤창 함수
 function resultScreen(result) {
@@ -1162,7 +1187,6 @@ function resultScreen(result) {
 }
 //다음 스테이지 넘어가는 캔버스 그리기
 function resultScreen_nextStage() {
-  if (myReq) cancelAnimationFrame(myReq);
   ctx.beginPath();
   ctx.fillStyle = "#ff8831";
   ctx.font = "40px sonic";
@@ -1188,6 +1212,110 @@ function resultScreen_nextStage() {
     }
   }, 1000);
 }
+
+var phaseImg = new Image();
+var phaseimgcount = 0;
+var delay= 0;
+
+function next_phase1(){
+  phaseImg.src ="phase/phase-"+phaseimgcount+".png";
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.globalAlpha = 1;
+  ctx.fillRect(10, 590, WIDTH-20, 200);
+  ctx.globalAlpha = 1;
+  ctx.lineWidth = 4;
+  ctx.strokeRect(10, 590, WIDTH-20, 200);
+  ctx.fillStyle = "White";
+  ctx.font = "25px sonic";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  var str = ("Dr.Egg : Hi, Sonic. You can't stop me.");
+  ctx.fillText(str, 38, 630);
+  ctx.drawImage(
+    phaseImg,
+    480,
+    400,
+    180,
+    200
+  );
+  ctx.closePath();
+  if(delay==15){
+    phaseimgcount++;
+    if(phaseimgcount == 6){
+      phaseimgcount =0;
+    }
+    delay = 0;
+  }
+  delay++;
+}
+
+function next_phase2(){
+  phaseImg.src ="phase/phase-"+phaseimgcount+".png";
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.globalAlpha = 1;
+  ctx.fillRect(10, 590, WIDTH-20, 200);
+  ctx.globalAlpha = 1;
+  ctx.lineWidth = 4;
+  ctx.strokeRect(10, 590, WIDTH-20, 200);
+  ctx.fillStyle = "White";
+  ctx.font = "25px sonic";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  var str = ("Dr.Egg : I'm angry! I kill you.");
+  ctx.fillText(str, 38, 630);
+  ctx.drawImage(
+    phaseImg,
+    480,
+    400,
+    180,
+    200
+  );
+  ctx.closePath();
+  if(delay==15){
+    phaseimgcount++;
+    if(phaseimgcount == 6){
+      phaseimgcount =0;
+    }
+    delay = 0;
+  }
+  delay++;
+}
+
+function next_phase3(){
+  phaseImg.src ="phase/phase-"+phaseimgcount+".png";
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.globalAlpha = 1;
+  ctx.fillRect(10, 590, WIDTH-20, 200);
+  ctx.globalAlpha = 1;
+  ctx.lineWidth = 4;
+  ctx.strokeRect(10, 590, WIDTH-20, 200);
+  ctx.fillStyle = "White";
+  ctx.font = "25px sonic";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  var str = ("Dr.Egg : No!!! This can't end like this.");
+  ctx.fillText(str, 38, 630);
+  ctx.drawImage(
+    phaseImg,
+    480,
+    400,
+    180,
+    200
+  );
+  ctx.closePath();
+  if(delay==15){
+    phaseimgcount++;
+    if(phaseimgcount == 6){
+      phaseimgcount =0;
+    }
+    delay = 0;
+  }
+  delay++;
+}
+
 var continue_img = new Image();
 continue_img.src = "resultScreen_btn/continue.png";
 var main_menu_img = new Image();
@@ -1268,4 +1396,7 @@ function mainLoop() {
   if (game.state == "go2Lv2" || game.state == "go2Lv3")
     resultScreen("nextStage");
   if (game.state == "pause") resultScreen("PAUSE");
+  if (game.state == "phase1") next_phase1();
+  if (game.state == "phase2") next_phase2();
+  if (game.state == "phase3") next_phase3();
 }
