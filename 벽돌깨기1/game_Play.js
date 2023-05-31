@@ -932,6 +932,7 @@ document.addEventListener("keydown", (e) => {
       n = 0;
     }
   if (key == "e" && game.state == "clear"){
+    $("#click-sound").get(0).play();
     setTimeout(function () {
       $("body").fadeOut(1000);
     }, 1000);
@@ -1086,13 +1087,16 @@ class Game {
         this.ball[1] = null;
       }
     }
+    
     if (this.level != 3) {
+      //1레벨 클리어 조건
         if (this.level == 1){
           if (this.bricks.count == 0) {
              game.state = "go2Lv2";
           }
          }
         if (this.level == 2){
+      //2레벨 클리어 조건
           if (mobcount == 0) game.state = "go2Lv3";
         } 
     }
@@ -1219,8 +1223,9 @@ function resultScreen_nextStage() {
   ctx.fillStyle = "#17569b";
   ctx.font = "20px sonic";
   ctx.textBaseline = "middle";
-  //링 개수*10만큼 점수 더함
-  score+=ring*5;
+  //링 개수*50만큼 점수 더함
+  score+=ring*50;
+  ring=0;
   var str = "current score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.55);
   ctx.closePath();
@@ -1252,7 +1257,7 @@ function next_phase1(){
   ctx.font = "25px sonic";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
-  var str = ("Dr.Egg : Hi, Sonic. You can't stop me.");
+  var str = ("Dr.Egg : Sonic! You can't stop me.");
   ctx.fillText(str, 38, 630);
   ctx.fillStyle = "White";
   ctx.font = "18px sonic";
@@ -1291,7 +1296,7 @@ function next_phase2(){
   ctx.font = "25px sonic";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
-  var str = ("Dr.Egg : I'm angry! I kill you.");
+  var str = ("Dr.Egg : I'm angry! I will kill you.");
   ctx.fillText(str, 38, 630);
   ctx.fillStyle = "White";
   ctx.font = "18px sonic";
@@ -1375,9 +1380,10 @@ function resultScreen_end() {
     $("#sound-bg").get(0).play();
   }
 
-  //링 개수*10만큼 점수 더함
-  score+=ring*10;
-  ctx.beginPath();
+  //링 개수*50만큼 점수 더함
+  score+=ring*50;
+  ring=0;
+  document.getElementById("score_count").innerHTML = score;
   ctx.fillStyle = "#ff8831";
   ctx.font = "40px sonic";
   ctx.textAlign = "center";
@@ -1389,7 +1395,7 @@ function resultScreen_end() {
   ctx.fillStyle = "#17569b";
   ctx.font = "20px sonic";
   ctx.textBaseline = "middle";
-  var str = "Your score: " + score;
+  str = "Your score: " + score;
   ctx.fillText(str, WIDTH / 2, HEIGHT * 0.5);
   if(game.state=="lose"){
     ctx.font = "15px sonic";
