@@ -593,6 +593,8 @@ class Eggman3 {
   }
 }
 
+var ck = 1; // 몬스터에 맞았을 때 한 번 속도 빨라지게
+
 //패들
 class Paddle {
   constructor(x, y, width, height, color) {
@@ -619,6 +621,7 @@ class Paddle {
       ball.colx = ball.x;
       ball.coly = ball.y;
       ball.ck = 1;
+      ck = 1;
       $("#sound-jump").get(0).play();
     }
   }
@@ -678,7 +681,7 @@ class Bricks {
     for (var r = 0; r < this.rows; r++)
       for (var c = 0; c < this.cols; c++) if (data[r][c]) this.count++;
   }
-  collide(x_Ball, y_Ball) {
+  collide(x_Ball, y_Ball, ball) {
     var row = Math.floor((y_Ball - this.y) / this.brickHeight);
     var col = Math.floor((x_Ball - this.x) / this.brickWidth);
     if (row < 0 || row >= this.rows) return false;
@@ -702,11 +705,21 @@ class Bricks {
         Knuckles++;
         document.getElementById("Knuckles_count").innerText = Knuckles;
       }
-      if(this.data[row][col] == 2||this.data[row][col] == 3||this.data[row][col] == 4){
+      if(this.data[row][col] == 2 || this.data[row][col] == 3||this.data[row][col] == 4){
+        this.data[row][col]--;
+        if (ck ==1){
+          ball.mx *= 2.5;
+          ball.my *= 2.5;
+          ck = 0;
+        }
+        if(this.data[row][col] == 1){
         mobcount--;
+      }  
       }
       //블럭 없애기
-      this.data[row][col] = 0;
+      if(this.data[row][col] != 2 && this.data[row][col] != 3 && this.data[row][col] != 4){
+        this.data[row][col] = 0;
+      }
       this.count--;
       score += 1 * g_level; //블럭당 점수 1점 * 레벨( 수정 가능 )
       $("#sound-brick-collide").get(0).play();
@@ -981,12 +994,12 @@ class Game {
       this.paddle.collide(this.ball[0]);
       if (this.level != 3) {
         //레벨 1,2
-        if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)) {
+        if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y, this.ball[0])) {
           if (!is_supersonic) {
             this.ball[0].mx *= -1;
           }
         }
-        if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY)) {
+        if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY, this.ball[0])) {
           if (!is_supersonic) {
             this.ball[0].my *= -1;
           }
@@ -1012,7 +1025,7 @@ class Game {
           if (this.ball[1] != null) this.boss3.collide(this.ball[1]);
           this.boss3.create(this.bricks);
         }
-        if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y)) {
+        if (this.bricks.collide(this.ball[0].collideX, this.ball[0].y, this.ball[0])) {
           if (!is_supersonic) {
             this.ball[0].mx *= -1;
             this.ball[0].colx = this.ball[0].x;
@@ -1020,7 +1033,7 @@ class Game {
             this.ball[0].ck = 1;
           }
         }
-        if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY)) {
+        if (this.bricks.collide(this.ball[0].x, this.ball[0].collideY, this.ball[0])) {
           if (!is_supersonic) {
             this.ball[0].my *= -1;
             this.ball[0].colx = this.ball[0].x;
@@ -1034,12 +1047,12 @@ class Game {
         this.ball[1].move(1 / DIV);
         this.ball[1].collideWall(0, 0, WIDTH);
         this.paddle.collide(this.ball[1]);
-        if (this.bricks.collide(this.ball[1].collideX, this.ball[1].y)) {
+        if (this.bricks.collide(this.ball[1].collideX, this.ball[1].y, this.ball[1])) {
           this.ball[1].mx *= -1;
           this.ball[1].colx = this.ball[1].x;
           this.ball[1].coly = this.ball[1].y;
         }
-        if (this.bricks.collide(this.ball[1].x, this.ball[1].collideY)) {
+        if (this.bricks.collide(this.ball[1].x, this.ball[1].collideY, this.ball[1])) {
           this.ball[1].my *= -1;
           this.ball[1].colx = this.ball[1].x;
           this.ball[1].coly = this.ball[1].y;
